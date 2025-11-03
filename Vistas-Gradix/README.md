@@ -1,6 +1,26 @@
-# VistasGradix
+# Gradix - Sistema de Gestión de Calificaciones
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.7.
+Sistema de gestión de calificaciones para Telesecundaria, migrado de React a Angular 20.
+
+## Características
+
+- 🎓 Gestión de alumnos
+- 📚 Gestión de materias y campos formativos
+- 📊 Criterios de evaluación personalizables
+- ✅ Captura de calificaciones
+- 📈 Estadísticas y análisis de rendimiento
+- 📄 Generación de reportes y boletas
+- 💾 Almacenamiento local con LocalStorage
+- 🔐 Sistema de autenticación
+
+## Credenciales de Demo
+
+- **Email**: maria.garcia@telesecundaria.edu.mx
+- **Contraseña**: demo123
+
+---
+
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.2.2.
 
 ## Development server
 
