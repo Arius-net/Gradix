@@ -1,0 +1,209 @@
+<!-- Main Container -->
+<div class="reportes-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <h1 class="page-title">Reportes y Boletas</h1>
+      <p class="page-description">Genera reportes de calificaciones para imprimir</p>
+    </div>
+  </div>
+
+  <!-- Selection Cards -->
+  <div class="selection-cards">
+    <div class="selection-card">
+      <label class="card-label">Seleccionar Alumno</label>
+      <div class="select-container">
+        <select #studentSel class="custom-select" [value]="currentStudent" (change)="onStudentChange(studentSel.value)">
+          <option value="" disabled>Seleccione un alumno</option>
+          @for (student of students(); track student.id) {
+            <option [value]="student.id">{{ student.name }}</option>
+          }
+        </select>
+        <div class="select-arrow">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    
+    <div class="selection-card">
+      <label class="card-label">Periodo</label>
+      <div class="select-container">
+  <select #periodSel class="custom-select" (change)="onPeriodChange(periodSel.value)">
+          <option value="primer">Primer Periodo</option>
+          <option value="segundo">Segundo Periodo</option>
+          <option value="tercer">Tercer Periodo</option>
+        </select>
+        <div class="select-arrow">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <button type="button" class="btn-primary" (click)="printBoleta()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6,9 6,2 18,2 18,9"></polyline>
+        <path d="M6,18H4a2,2,0,0,1-2-2V11a2,2,0,0,1,2-2H20a2,2,0,0,1,2,2v5a2,2,0,0,1-2,2H18"></path>
+        <line x1="6" y1="14" x2="18" y2="14"></line>
+      </svg>
+      <span>Imprimir Boleta</span>
+  </button>
+    
+  <button type="button" class="btn-secondary" (click)="downloadPdf()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7,10 12,15 17,10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      <span>Descargar PDF</span>
+    </button>
+  </div>
+
+  <!-- Report Card -->
+  <div class="report-card" #reportCard>
+    <!-- Card Header -->
+    <div class="card-header">
+      <div class="header-info">
+        <h2 class="card-title">Boleta de Calificaciones</h2>
+        <p class="school-year">Ciclo Escolar 2024-2025</p>
+      </div>
+      <div class="school-logo">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+          <rect x="8" y="4" width="32" height="40" stroke="#4F39F6" stroke-width="4" fill="none"/>
+          <rect x="28" y="4" width="12" height="12" stroke="#4F39F6" stroke-width="4" fill="#4F39F6"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Student Information -->
+    <div class="student-info">
+      <div class="info-grid">
+        <div class="info-item">
+          <label class="info-label">Nombre del Alumno:</label>
+          <span class="info-value">{{ getFormattedStudentName() }}</span>
+        </div>
+        <div class="info-item">
+          <label class="info-label">Grado y Grupo:</label>
+          <span class="info-value">
+            @if (getSelectedStudent(); as student) {
+              {{ student.alumno.grado }}° {{ student.alumno.grupo }}
+            } @else {
+              -
+            }
+          </span>
+        </div>
+        <div class="info-item">
+          <label class="info-label">Periodo:</label>
+          <span class="info-value">
+            @if (getSelectedPeriod(); as period) {
+              {{ period.name }}
+            } @else {
+              Primer Periodo
+            }
+          </span>
+        </div>
+        <div class="info-item">
+          <label class="info-label">Fecha de Emisión:</label>
+          <span class="info-value">{{ getCurrentDate() }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grades Section -->
+    <div class="grades-section">
+      <h3 class="section-title">Calificaciones por Materia</h3>
+      
+      <div class="grades-table">
+        <!-- Table Header -->
+        <div class="table-header">
+          <div class="header-cell subject">Materia</div>
+          <div class="header-cell grade">Calificación</div>
+          <div class="header-cell status">Estado</div>
+        </div>
+        
+        <!-- Table Body -->
+        <div class="table-body">
+          <div class="table-row">
+            <div class="cell subject">Español</div>
+            <div class="cell grade">8.8</div>
+            <div class="cell status">
+              <span class="status-badge approved">Aprobado</span>
+            </div>
+          </div>
+          
+          <div class="table-row">
+            <div class="cell subject">Matemáticas</div>
+            <div class="cell grade">8.8</div>
+            <div class="cell status">
+              <span class="status-badge approved">Aprobado</span>
+            </div>
+          </div>
+          
+          <div class="table-row">
+            <div class="cell subject">Ciencias (Biología)</div>
+            <div class="cell grade">S/C</div>
+            <div class="cell status">
+              <span class="status-badge pending">Sin Calificar</span>
+            </div>
+          </div>
+          
+          <div class="table-row">
+            <div class="cell subject">Historia</div>
+            <div class="cell grade">S/C</div>
+            <div class="cell status">
+              <span class="status-badge pending">Sin Calificar</span>
+            </div>
+          </div>
+          
+          <div class="table-row">
+            <div class="cell subject">Formación Cívica y Ética</div>
+            <div class="cell grade">S/C</div>
+            <div class="cell status">
+              <span class="status-badge pending">Sin Calificar</span>
+            </div>
+          </div>
+          
+          <div class="table-row">
+            <div class="cell subject">Inglés</div>
+            <div class="cell grade">S/C</div>
+            <div class="cell status">
+              <span class="status-badge pending">Sin Calificar</span>
+            </div>
+          </div>
+          
+          <div class="table-row total">
+            <div class="cell subject">Promedio General</div>
+            <div class="cell grade">8.8</div>
+            <div class="cell status">
+              <span class="status-badge approved">Aprobado</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signatures Section -->
+    <div class="signatures-section">
+      <div class="signature-line">
+        <div class="signature-space"></div>
+        <div class="signature-label">Firma del Docente</div>
+      </div>
+      <div class="signature-line">
+        <div class="signature-space"></div>
+        <div class="signature-label">Firma del Director</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="card-footer">
+      <p class="footer-line">Telesecundaria - Sistema Gradix</p>
+      <p class="footer-line">Este documento es oficial y tiene validez académica</p>
+    </div>
+  </div>
+</div>
