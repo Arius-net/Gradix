@@ -1,0 +1,420 @@
+/* Criterios de Evaluación - Estilos Personalizados */
+
+.criterios-container {
+  background: #F9FAFB;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+/* Card Animations */
+.subject-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.subject-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.subject-card.selected {
+  background: #EEF2FF;
+  border: 2px solid #615FFF;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(97, 95, 255, 0.2);
+}
+
+/* Progress Bar Animation */
+.progress-bar {
+  background: linear-gradient(90deg, #030213 0%, #4F39F6 100%);
+  border-radius: 26843500px;
+  height: 8px;
+  animation: progressGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes progressGlow {
+  0% {
+    box-shadow: 0 0 5px rgba(79, 57, 246, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(79, 57, 246, 0.6);
+  }
+}
+
+/* Table Styles */
+.criteria-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-row {
+  transition: background-color 0.2s ease;
+}
+
+.table-row:hover {
+  background-color: rgba(249, 250, 251, 0.8);
+}
+
+.table-header {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  border-bottom: 2px solid #e5e7eb;
+}
+
+/* Button Styles */
+.action-btn {
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn:hover {
+  transform: scale(1.05);
+}
+
+.edit-btn:hover {
+  background-color: rgba(79, 57, 246, 0.1);
+  color: #4F39F6;
+}
+
+.delete-btn:hover {
+  background-color: rgba(231, 0, 11, 0.1);
+  color: #E7000B;
+}
+
+/* Add Criteria Button */
+.add-criteria-btn {
+  background: linear-gradient(135deg, #030213 0%, #4F39F6 100%);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-criteria-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.add-criteria-btn:hover::before {
+  left: 100%;
+}
+
+.add-criteria-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(79, 57, 246, 0.4);
+}
+
+/* Add Subject Button */
+.add-subject-btn {
+  background: linear-gradient(135deg, #4338CA 0%, #6366F1 100%);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.add-subject-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.add-subject-btn:hover::before {
+  left: 100%;
+}
+
+.add-subject-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(67, 56, 202, 0.4);
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Percentage Badge */
+.percentage-badge {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #0A0A0A;
+  display: inline-block;
+  min-width: 40px;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.percentage-badge:hover {
+  background: rgba(79, 57, 246, 0.1);
+  border-color: #4F39F6;
+  transform: scale(1.05);
+}
+
+/* Sidebar Navigation Active State */
+.nav-item.active {
+  background: #EEF2FF;
+  color: #4F39F6;
+  border-radius: 10px;
+}
+
+.nav-item.active svg {
+  color: #4F39F6;
+}
+
+/* Header Gradient */
+.header-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+  .criterios-container {
+    padding: 16px;
+  }
+  
+  .subject-card {
+    padding: 12px;
+  }
+  
+  .criteria-table {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .criterios-container {
+    padding: 12px;
+  }
+  
+  .grid-responsive {
+    grid-template-columns: 1fr;
+  }
+  
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .col-span-4,
+  .col-span-2 {
+    grid-column: span 1;
+  }
+}
+
+/* Loading Animation */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Focus States for Accessibility */
+.subject-card:focus,
+.action-btn:focus,
+.add-criteria-btn:focus {
+  outline: 2px solid #4F39F6;
+  outline-offset: 2px;
+}
+
+/* Custom Scrollbar */
+.criteria-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.criteria-scroll::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.criteria-scroll::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.criteria-scroll::-webkit-scrollbar-thumb:hover {
+  background: #4F39F6;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  animation: slideIn 0.3s ease-out;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Form Styles */
+.form-input {
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 57, 246, 0.15);
+}
+
+.form-label {
+  font-weight: 500;
+  color: #374151;
+}
+
+/* Modal Button Styles */
+.modal-btn-primary {
+  background: linear-gradient(135deg, #030213 0%, #4F39F6 100%);
+  transition: all 0.2s ease;
+}
+
+.modal-btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79, 57, 246, 0.3);
+}
+
+.modal-btn-secondary {
+  transition: all 0.2s ease;
+}
+
+.modal-btn-secondary:hover {
+  background: #F9FAFB;
+  border-color: #4F39F6;
+  color: #4F39F6;
+}
+
+/* Error States */
+.input-error {
+  border-color: #EF4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+.error-text {
+  color: #EF4444;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Success States */
+.input-success {
+  border-color: #10B981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Disabled Input Styles */
+input:disabled,
+select:disabled,
+textarea:disabled {
+  background-color: #F3F4F6;
+  color: #6B7280;
+  cursor: not-allowed;
+}
+
+/* Percentage Indicator */
+.percentage-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.percentage-warning {
+  color: #F59E0B;
+}
+
+.percentage-error {
+  color: #EF4444;
+}
+
+.percentage-success {
+  color: #10B981;
+}
+
+/* Estilos específicos para botones de acción en tarjetas de materias */
+.subject-card {
+  position: relative;
+}
+
+.subject-card .action-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(209, 213, 219, 0.6);
+  backdrop-filter: blur(4px);
+  transition: all 0.2s ease;
+}
+
+.subject-card .edit-btn:hover {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: #3b82f6;
+  color: #3b82f6;
+  transform: scale(1.05);
+}
+
+.subject-card .delete-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #ef4444;
+  color: #ef4444;
+  transform: scale(1.05);
+}
+
+/* Hover effect for subject cards with action buttons */
+.subject-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.subject-card.selected:hover {
+  transform: translateY(-1px);
+}
+
+/* Animation for button visibility */
+.group:hover .opacity-0 {
+  opacity: 1 !important;
+}

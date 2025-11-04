@@ -1,0 +1,395 @@
+<!-- Main Container -->
+<div class="criterios-container">
+  <!-- Header Section -->
+  <div class="flex justify-between items-center mb-6 header-gradient p-4 rounded-lg">
+    <div class="flex flex-col gap-2">
+      <h1 class="text-2xl font-normal text-black">Criterios de Evaluación</h1>
+      <p class="text-gray-500 text-base">Define los criterios y ponderaciones por materia</p>
+    </div>
+    <div class="button-group">
+      <button class="add-criteria-btn text-white px-4 py-2 rounded-lg flex items-center gap-2" (click)="agregarCriterio()">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
+        <span class="text-sm">Agregar Criterio</span>
+      </button>
+      
+      <button class="add-subject-btn text-white px-4 py-2 rounded-lg flex items-center gap-2" (click)="agregarMateria()">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+        </svg>
+        <span class="text-sm">Agregar Materia</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content Layout -->
+  <div class="flex gap-6">
+    <!-- Left Panel - Subject Selection -->
+    <div class="w-72 bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col">
+      <!-- Header -->
+      <div class="p-6 border-b border-gray-100">
+        <h2 class="text-base font-normal text-black mb-2">Seleccionar Materia</h2>
+        <p class="text-gray-500 text-sm leading-6">Elige la materia para gestionar sus criterios</p>
+      </div>
+
+      <!-- Subject List -->
+      <div class="p-6 flex-1">
+        <div class="space-y-3">
+          <!-- Lista dinámica de materias -->
+          <div 
+            *ngFor="let materia of materias" 
+            class="subject-card rounded-lg p-3 group relative"
+            [class.selected]="esMateriaSeleccionada(materia)"
+            [class.bg-indigo-50]="esMateriaSeleccionada(materia)"
+            [class.border-2]="esMateriaSeleccionada(materia)"
+            [class.border-indigo-500]="esMateriaSeleccionada(materia)"
+            [class.bg-gray-50]="!esMateriaSeleccionada(materia)">
+            
+            <div (click)="seleccionarMateria(materia)" class="cursor-pointer">
+              <h3 class="text-black font-normal text-base mb-1 pr-16">{{ materia.nombre }}</h3>
+              <p class="text-gray-500 text-xs">{{ materia.criteriosCount }} criterios</p>
+            </div>
+            
+            <!-- Botones de acción -->
+            <div class="absolute right-2 top-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button 
+                class="action-btn edit-btn w-7 h-7 flex items-center justify-center rounded"
+                (click)="editarMateria(materia)"
+                title="Editar materia">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+              </button>
+              <button 
+                class="action-btn delete-btn w-7 h-7 flex items-center justify-center rounded"
+                (click)="eliminarMateria(materia)"
+                title="Eliminar materia">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Panel - Criteria Details -->
+    <div class="flex-1 bg-white rounded-2xl shadow-sm border border-gray-100">
+      <!-- Header -->
+      <div class="p-6 border-b border-gray-100">
+        <h2 class="text-base font-normal text-black mb-2">{{ materiaSeleccionada.nombre }}</h2>
+        <p class="text-gray-500 text-base">Ponderación total: {{ getPorcentajeTotal() }}% de 100%</p>
+      </div>
+
+      <!-- Progress Section -->
+      <div class="px-6 pt-6">
+        <div class="progress-bar w-full rounded-full h-2 mb-4"></div>
+      </div>
+
+      <!-- Criteria Table -->
+      <div class="px-6 pb-6">
+        <div class="overflow-hidden">
+          <!-- Table Header -->
+          <div class="grid grid-cols-12 gap-2 py-3 border-b border-gray-100">
+            <div class="col-span-3 px-2">
+              <span class="text-sm font-normal text-black">Criterio</span>
+            </div>
+            <div class="col-span-3 px-2">
+              <span class="text-sm font-normal text-black">Descripción</span>
+            </div>
+            <div class="col-span-2 px-2">
+              <span class="text-sm font-normal text-black">Ponderación</span>
+            </div>
+            <div class="col-span-4 px-2 text-right">
+              <span class="text-sm font-normal text-black">Acciones</span>
+            </div>
+          </div>
+
+          <!-- Table Rows Dinámicas -->
+          <div class="divide-y divide-gray-100" *ngIf="materiaSeleccionada.criterios.length > 0">
+            <div 
+              *ngFor="let criterio of materiaSeleccionada.criterios" 
+              class="table-row grid grid-cols-12 gap-2 py-3">
+              <div class="col-span-3 px-2">
+                <span class="text-sm text-black">{{ criterio.nombre }}</span>
+              </div>
+              <div class="col-span-3 px-2">
+                <span class="text-sm text-gray-500">{{ criterio.descripcion }}</span>
+              </div>
+              <div class="col-span-2 px-2">
+                <span class="percentage-badge">{{ criterio.porcentaje }}%</span>
+              </div>
+              <div class="col-span-4 px-2 flex justify-end gap-2">
+                <button 
+                  class="action-btn edit-btn w-9 h-8 flex items-center justify-center rounded"
+                  (click)="editarCriterio(criterio)"
+                  title="Editar criterio">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                  </svg>
+                </button>
+                <button 
+                  class="action-btn delete-btn w-9 h-8 flex items-center justify-center rounded"
+                  (click)="eliminarCriterio(criterio)"
+                  title="Eliminar criterio">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mensaje cuando no hay criterios -->
+          <div *ngIf="materiaSeleccionada.criterios.length === 0" class="text-center py-8">
+            <p class="text-gray-500 text-sm mb-4">No hay criterios definidos para {{ materiaSeleccionada.nombre }}</p>
+            <button 
+              class="add-criteria-btn text-white px-4 py-2 rounded-lg flex items-center gap-2 mx-auto"
+              (click)="agregarCriterio()">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+              </svg>
+              <span class="text-sm">Agregar Primer Criterio</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para Agregar Nuevo Criterio -->
+<div *ngIf="mostrarModalCriterio" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="modal-content bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+    <!-- Header del Modal -->
+    <div class="flex justify-between items-center p-6 border-b border-gray-200">
+      <div>
+        <h3 class="text-lg font-semibold text-gray-900">Agregar Nuevo Criterio</h3>
+        <p class="text-sm text-gray-500 mt-1">Define el criterio de evaluación y su ponderación</p>
+      </div>
+      <button 
+        (click)="cerrarModalCriterio()" 
+        class="text-gray-400 hover:text-gray-600 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Contenido del Modal -->
+    <form (ngSubmit)="confirmarAgregarCriterio()" class="p-6 space-y-4">
+      <!-- Materia -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Materia</label>
+        <select 
+          [(ngModel)]="materiaSeleccionada" 
+          name="materia"
+          class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-700 cursor-not-allowed"
+          disabled>
+          <option [ngValue]="materiaSeleccionada">{{ materiaSeleccionada.nombre }}</option>
+        </select>
+      </div>
+
+      <!-- Nombre del Criterio -->
+      <div>
+        <label class="form-label block text-sm mb-2">Nombre del Criterio</label>
+        <input 
+          type="text" 
+          [(ngModel)]="nuevoCriterio.nombre"
+          name="nombre"
+          placeholder="Ej: Exámenes, Tareas, Participación"
+          class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+          required>
+      </div>
+
+      <!-- Descripción -->
+      <div>
+        <label class="form-label block text-sm mb-2">Descripción (Opcional)</label>
+        <textarea 
+          [(ngModel)]="nuevoCriterio.descripcion"
+          name="descripcion"
+          placeholder="Breve descripción del criterio"
+          rows="3"
+          class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none"></textarea>
+      </div>
+
+      <!-- Ponderación -->
+      <div>
+        <label class="form-label block text-sm mb-2">Ponderación (%)</label>
+        <div class="relative">
+          <input 
+            type="number" 
+            [(ngModel)]="nuevoCriterio.porcentaje"
+            name="porcentaje"
+            placeholder="0 - 100"
+            min="0"
+            max="100"
+            class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+            required>
+        </div>
+        <p class="text-xs text-gray-500 mt-1">
+          Porcentaje del 0 al 100. Total actual: 
+          <span [class]="getPorcentajeTotal() > 100 ? 'text-red-500 font-semibold' : 'text-gray-700'">
+            {{ getPorcentajeTotal() }}%
+          </span>
+        </p>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end gap-3 pt-4">
+        <button 
+          type="button"
+          (click)="cerrarModalCriterio()"
+          class="modal-btn-secondary px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg">
+          Cancelar
+        </button>
+        <button 
+          type="submit"
+          class="modal-btn-primary px-4 py-2 text-white rounded-lg">
+          Agregar Criterio
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal para Agregar Nueva Materia -->
+<div *ngIf="mostrarModalMateria" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="modal-content bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+    <!-- Header del Modal -->
+    <div class="flex justify-between items-center p-6 border-b border-gray-200">
+      <div>
+        <h3 class="text-lg font-semibold text-gray-900">Agregar Nueva Materia</h3>
+        <p class="text-sm text-gray-500 mt-1">Define una nueva materia para el sistema de calificaciones</p>
+      </div>
+      <button 
+        (click)="cerrarModalMateria()" 
+        class="text-gray-400 hover:text-gray-600 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Contenido del Modal -->
+    <form (ngSubmit)="confirmarAgregarMateria()" class="p-6 space-y-4">
+      <!-- Nombre de la Materia -->
+      <div>
+        <label class="form-label block text-sm mb-2">Nombre de la Materia *</label>
+        <input 
+          type="text" 
+          [(ngModel)]="nuevaMateria.nombre"
+          name="nombreMateria"
+          placeholder="Ej: Física, Química, Arte, Educación Física"
+          class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+          required>
+        <p class="text-xs text-gray-500 mt-1">El nombre debe ser único en el sistema</p>
+      </div>
+
+      <!-- Descripción -->
+      <div>
+        <label class="form-label block text-sm mb-2">Descripción (Opcional)</label>
+        <textarea 
+          [(ngModel)]="nuevaMateria.descripcion"
+          name="descripcionMateria"
+          placeholder="Breve descripción de la materia o área de conocimiento"
+          rows="3"
+          class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none resize-none"></textarea>
+      </div>
+
+      <!-- Información adicional -->
+      <div class="bg-indigo-50 border border-indigo-200 rounded-lg p-4">
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-indigo-600 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <div>
+            <h4 class="text-sm font-medium text-indigo-800 mb-1">Información</h4>
+            <p class="text-xs text-indigo-700">Una vez creada la materia, podrás agregar criterios de evaluación específicos para ella.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end gap-3 pt-4">
+        <button 
+          type="button"
+          (click)="cerrarModalMateria()"
+          class="modal-btn-secondary px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg">
+          Cancelar
+        </button>
+        <button 
+          type="submit"
+          class="modal-btn-primary px-4 py-2 text-white rounded-lg bg-indigo-600 hover:bg-indigo-700">
+          Agregar Materia
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal para Editar Materia -->
+<div *ngIf="mostrarModalEditarMateria" class="modal-overlay fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="modal-content bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+    <!-- Header del Modal -->
+    <div class="flex justify-between items-center p-6 border-b border-gray-200">
+      <div>
+        <h3 class="text-lg font-semibold text-gray-900">Editar Materia</h3>
+        <p class="text-sm text-gray-500 mt-1">Modifica los datos de la materia seleccionada</p>
+      </div>
+      <button 
+        (click)="cerrarModalEditarMateria()" 
+        class="text-gray-400 hover:text-gray-600 transition-colors">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Contenido del Modal -->
+    <form (ngSubmit)="confirmarEditarMateria()" class="p-6 space-y-4" *ngIf="materiaEditando">
+      <!-- Nombre de la Materia -->
+      <div>
+        <label class="form-label block text-sm mb-2">Nombre de la Materia *</label>
+        <input 
+          type="text" 
+          [(ngModel)]="materiaEditando.nombre"
+          name="nombreMateriaEditar"
+          placeholder="Ej: Física, Química, Arte, Educación Física"
+          class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none"
+          required>
+        <p class="text-xs text-gray-500 mt-1">El nombre debe ser único en el sistema</p>
+      </div>
+
+      <!-- Información de criterios -->
+      <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+        <div class="flex items-start">
+          <svg class="w-5 h-5 text-yellow-600 mt-0.5 mr-3 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+          </svg>
+          <div>
+            <h4 class="text-sm font-medium text-yellow-800 mb-1">Información importante</h4>
+            <p class="text-xs text-yellow-700">Esta materia tiene {{ materiaEditando.criteriosCount }} criterios asociados. Al editarla, los criterios se mantienen intactos.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end gap-3 pt-4">
+        <button 
+          type="button"
+          (click)="cerrarModalEditarMateria()"
+          class="modal-btn-secondary px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg">
+          Cancelar
+        </button>
+        <button 
+          type="submit"
+          class="modal-btn-primary px-4 py-2 text-white rounded-lg bg-green-600 hover:bg-green-700">
+          Guardar Cambios
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

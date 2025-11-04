@@ -1,0 +1,436 @@
+/* Reportes y Boletas - Estilos */
+
+.reportes-container {
+  background: #F9FAFB;
+  min-height: 100vh;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+}
+
+/* Header Section */
+.header-section {
+  margin-bottom: 24px;
+}
+
+.header-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.page-title {
+  color: #0A0A0A;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 36px;
+  margin: 0;
+}
+
+.page-description {
+  color: #4A5565;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0;
+}
+
+/* Selection Cards */
+.selection-cards {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.selection-card {
+  flex: 1;
+  background: white;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card-label {
+  color: #0A0A0A;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0;
+}
+
+.select-container {
+  position: relative;
+}
+
+.custom-select {
+  width: 100%;
+  height: 36px;
+  background: #F3F3F5;
+  border: none;
+  border-radius: 8px;
+  padding: 0 12px;
+  padding-right: 40px;
+  color: #0A0A0A;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  appearance: none;
+  cursor: pointer;
+}
+
+.custom-select:focus {
+  outline: 2px solid #4F39F6;
+  outline-offset: -2px;
+}
+
+.select-arrow {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #717182;
+  opacity: 0.5;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.btn-primary {
+  background: #030213;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: #1a1a2e;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: white;
+  color: #0A0A0A;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: #f8f9fa;
+  border-color: #4F39F6;
+  transform: translateY(-1px);
+}
+
+/* Report Card */
+.report-card {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Card Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 2px solid #4F39F6;
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-title {
+  color: #0A0A0A;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 16px;
+  margin: 0;
+}
+
+.school-year {
+  color: #717182;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0;
+}
+
+.school-logo {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Student Information */
+.student-info {
+  padding: 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 40px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-label {
+  color: #4A5565;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.info-value {
+  color: #0A0A0A;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+/* Grades Section */
+.grades-section {
+  padding: 24px;
+}
+
+.section-title {
+  color: #0A0A0A;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 0 0 16px 0;
+}
+
+/* Grades Table */
+.grades-table {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  background: #f8f9fa;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.header-cell {
+  padding: 12px 16px;
+  color: #0A0A0A;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.header-cell.grade,
+.header-cell.status {
+  text-align: center;
+}
+
+.table-body {
+  background: white;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.table-row:hover {
+  background: #f8f9fa;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-row.total {
+  background: #f8f9fa;
+  font-weight: 500;
+}
+
+.cell {
+  padding: 12px 16px;
+  color: #0A0A0A;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.cell.grade,
+.cell.status {
+  justify-content: center;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: center;
+}
+
+.status-badge.approved {
+  background: rgba(0, 166, 62, 0.1);
+  color: #00A63E;
+}
+
+.status-badge.pending {
+  background: rgba(106, 114, 130, 0.1);
+  color: #6A7282;
+}
+
+/* Signatures Section */
+.signatures-section {
+  padding: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.signature-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.signature-space {
+  width: 100%;
+  height: 2px;
+  background: #99A1AF;
+  margin-bottom: 8px;
+}
+
+.signature-label {
+  color: #0A0A0A;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: center;
+}
+
+/* Footer */
+.card-footer {
+  padding: 24px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footer-line {
+  color: #6A7282;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .reportes-container {
+    padding: 16px;
+  }
+  
+  .selection-cards {
+    flex-direction: column;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .table-header,
+  .table-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .header-cell.grade,
+  .header-cell.status,
+  .cell.grade,
+  .cell.status {
+    text-align: left;
+    justify-content: flex-start;
+  }
+  
+  .signatures-section {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .reportes-container {
+    background: white;
+    padding: 0;
+  }
+  
+  .header-section,
+  .selection-cards,
+  .action-buttons {
+    display: none;
+  }
+  
+  .report-card {
+    border: none;
+    box-shadow: none;
+  }
+}
