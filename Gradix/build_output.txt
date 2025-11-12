@@ -1,0 +1,43 @@
+> Task :clean
+> Task :checkKotlinGradlePluginConfigurationErrors
+> Task :processResources
+> Task :processTestResources NO-SOURCE
+
+> Task :compileKotlin FAILED
+e: file:///C:/Users/saida/OneDrive/Documents/Gradix/src/main/kotlin/com/gradix/controllers/AlumnoController.kt:142:122 Expecting ')'
+e: file:///C:/Users/saida/OneDrive/Documents/Gradix/src/main/kotlin/com/gradix/controllers/AlumnoController.kt:144:5 Expecting a top level declaration
+e: file:///C:/Users/saida/OneDrive/Documents/Gradix/src/main/kotlin/com/gradix/controllers/AlumnoController.kt:153:1 Expecting a top level declaration
+e: file:///C:/Users/saida/OneDrive/Documents/Gradix/src/main/kotlin/com/gradix/controllers/AlumnoController.kt:142:13 Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
+public val PipelineContext<*, ApplicationCall>.call: ApplicationCall defined in io.ktor.server.application
+e: file:///C:/Users/saida/OneDrive/Documents/Gradix/src/main/kotlin/com/gradix/controllers/AlumnoController.kt:142:80 Unresolved reference: e
+e: file:///C:/Users/saida/OneDrive/Documents/Gradix/src/main/kotlin/com/gradix/controllers/CalificacionController.kt:25:51 Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
+public operator fun Url.Companion.invoke(fullUrl: String): Url defined in io.ktor.http
+e: file:///C:/Users/saida/OneDrive/Documents/Gradix/src/main/kotlin/com/gradix/controllers/MateriaController.kt:24:51 Unresolved reference. None of the following candidates is applicable because of receiver type mismatch: 
+public operator fun Url.Companion.invoke(fullUrl: String): Url defined in io.ktor.http
+e: file:///C:/Users/saida/OneDrive/Documents/Gradix/src/main/kotlin/com/gradix/models/Alumno.kt:16:71 Classifier 'CurrentTimestamp' does not have a companion object, and thus must be initialized here
+e: file:///C:/Users/saida/OneDrive/Documents/Gradix/src/main/kotlin/com/gradix/models/Calificacion.kt:16:71 Classifier 'CurrentTimestamp' does not have a companion object, and thus must be initialized here
+e: file:///C:/Users/saida/OneDrive/Documents/Gradix/src/main/kotlin/com/gradix/models/Docente.kt:17:71 Classifier 'CurrentTimestamp' does not have a companion object, and thus must be initialized here
+
+[Incubating] Problems report is available at: file:///C:/Users/saida/OneDrive/Documents/Gradix/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileKotlin'.
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.GradleCompilerRunnerWithWorkers$GradleKotlinCompilerWorkAction
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.14/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 2s
+4 actionable tasks: 4 executed

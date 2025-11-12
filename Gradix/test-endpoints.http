@@ -1,0 +1,223 @@
+### Verificar que el servidor está funcionando
+GET http://localhost:8080/
+Accept: application/json
+
+### ==========================================
+### AUTENTICACIÓN
+### ==========================================
+
+### Registrar un nuevo docente
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "curp": "ABCD123456HDFXXX01",
+  "nombres": "Juan Carlos",
+  "apellidoPaterno": "García",
+  "apellidoMaterno": "López",
+  "email": "juan.garcia@escuela.edu.mx",
+  "password": "MiPassword123"
+}
+
+### Login
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "juan.garcia@escuela.edu.mx",
+  "password": "MiPassword123"
+}
+
+### Guardar el token de la respuesta anterior
+### Reemplaza "TU_TOKEN_AQUI" con el token que recibiste
+
+### ==========================================
+### ALUMNOS
+### ==========================================
+
+### Obtener todos los alumnos
+GET http://localhost:8080/api/alumnos
+Accept: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+### Obtener alumnos filtrados por grado y grupo
+GET http://localhost:8080/api/alumnos?grado=1&grupo=A
+Accept: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+### Obtener alumno por ID
+GET http://localhost:8080/api/alumnos/1
+Accept: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+### Crear un nuevo alumno
+POST http://localhost:8080/api/alumnos
+Content-Type: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+{
+  "curp": "EFGH123456MDFYYY02",
+  "nombres": "María",
+  "apellidoPaterno": "Pérez",
+  "apellidoMaterno": "Sánchez",
+  "fechaNacimiento": "2010-05-15",
+  "grado": 1,
+  "grupo": "A"
+}
+
+### Actualizar un alumno
+PUT http://localhost:8080/api/alumnos/1
+Content-Type: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+{
+  "curp": "EFGH123456MDFYYY02",
+  "nombres": "María Fernanda",
+  "apellidoPaterno": "Pérez",
+  "apellidoMaterno": "Sánchez",
+  "fechaNacimiento": "2010-05-15",
+  "grado": 2,
+  "grupo": "B"
+}
+
+### Desactivar un alumno (soft delete)
+DELETE http://localhost:8080/api/alumnos/1
+Authorization: Bearer TU_TOKEN_AQUI
+
+### ==========================================
+### MATERIAS
+### ==========================================
+
+### Obtener todas las materias
+GET http://localhost:8080/api/materias
+Accept: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+### Obtener materia por ID
+GET http://localhost:8080/api/materias/1
+Accept: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+### Crear una nueva materia
+POST http://localhost:8080/api/materias
+Content-Type: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+{
+  "nombre": "Matemáticas",
+  "campoFormativoId": 1,
+  "grado": 1,
+  "grupo": "A"
+}
+
+### Actualizar una materia
+PUT http://localhost:8080/api/materias/1
+Content-Type: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+{
+  "nombre": "Matemáticas Avanzadas",
+  "campoFormativoId": 1,
+  "grado": 1,
+  "grupo": "A"
+}
+
+### Eliminar una materia
+DELETE http://localhost:8080/api/materias/1
+Authorization: Bearer TU_TOKEN_AQUI
+
+### ==========================================
+### CAMPOS FORMATIVOS
+### ==========================================
+
+### Obtener todos los campos formativos
+GET http://localhost:8080/api/campos-formativos
+Accept: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+### Crear un nuevo campo formativo
+POST http://localhost:8080/api/campos-formativos
+Content-Type: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+{
+  "nombre": "Pensamiento Matemático",
+  "descripcion": "Desarrollo de habilidades matemáticas"
+}
+
+### ==========================================
+### CRITERIOS
+### ==========================================
+
+### Obtener todos los criterios
+GET http://localhost:8080/api/criterios
+Accept: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+### Obtener criterios por materia
+GET http://localhost:8080/api/criterios?materiaId=1
+Accept: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+### Crear un nuevo criterio
+POST http://localhost:8080/api/criterios
+Content-Type: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+{
+  "nombre": "Examen Final",
+  "descripcion": "Evaluación sumativa del periodo",
+  "porcentaje": "40.0",
+  "materiaId": 1
+}
+
+### ==========================================
+### CALIFICACIONES
+### ==========================================
+
+### Obtener todas las calificaciones
+GET http://localhost:8080/api/calificaciones
+Accept: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+### Obtener calificaciones por alumno
+GET http://localhost:8080/api/calificaciones?alumnoId=1
+Accept: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+### Obtener calificaciones por periodo
+GET http://localhost:8080/api/calificaciones?periodo=1
+Accept: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+### Crear una nueva calificación
+POST http://localhost:8080/api/calificaciones
+Content-Type: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+userId: 1
+
+{
+  "alumnoId": 1,
+  "criterioId": 1,
+  "calificacion": "9.5",
+  "periodo": "1",
+  "observaciones": "Excelente desempeño"
+}
+
+### Actualizar una calificación
+PUT http://localhost:8080/api/calificaciones/1
+Content-Type: application/json
+Authorization: Bearer TU_TOKEN_AQUI
+
+{
+  "alumnoId": 1,
+  "criterioId": 1,
+  "calificacion": "10.0",
+  "periodo": "1",
+  "observaciones": "Sobresaliente"
+}
+
+### Eliminar una calificación
+DELETE http://localhost:8080/api/calificaciones/1
+Authorization: Bearer TU_TOKEN_AQUI
+

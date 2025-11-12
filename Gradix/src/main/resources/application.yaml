@@ -1,0 +1,18 @@
+ktor:
+  application:
+    modules:
+      - com.gradix.ApplicationKt.module
+  deployment:
+    port: 8080
+
+database:
+  driver: "org.postgresql.Driver"
+  url: "jdbc:postgresql://localhost:5432/gradix"
+  user: "postgres"
+  password: "postgres"
+
+jwt:
+  secret: "gradix-secret-key-2024"
+  issuer: "gradix"
+  audience: "gradix-users"
+
