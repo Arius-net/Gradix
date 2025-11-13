@@ -5,6 +5,9 @@
   min-height: 100vh;
   padding: 24px;
   font-family: Arial, sans-serif;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 /* Header Section */
@@ -413,6 +416,80 @@
   .signatures-section {
     grid-template-columns: 1fr;
     gap: 24px;
+  }
+}
+
+/* Extra small devices - improve stacking and touch targets */
+@media (max-width: 768px) {
+  .reportes-container {
+    padding: 4px !important;
+    margin: 0;
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  /* Selection area: stack and reduce padding */
+  .selection-cards {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .selection-card {
+    padding: 16px;
+  }
+
+  .custom-select {
+    height: 40px;
+    font-size: 14px;
+    padding-right: 44px;
+  }
+
+  /* Action buttons: full width and stacked */
+  .action-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Report card spacing */
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .student-info {
+    padding: 16px;
+  }
+
+  /* Collapse grades table into single column rows */
+  .table-header,
+  .table-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .header-cell.grade,
+  .header-cell.status,
+  .cell.grade,
+  .cell.status {
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  .grades-section {
+    padding: 16px;
+  }
+
+  .signatures-section {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 }
 
