@@ -1,1 +1,41 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Reset básico para elementos */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Asegurar que app-root use todo el ancho */
+app-root {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Utilidades responsivas globales */
+.w-full {
+  width: 100% !important;
+}
+
+.min-h-screen {
+  min-height: 100vh !important;
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+/* Mejorar scroll en móviles */
+@media (max-width: 768px) {
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+}

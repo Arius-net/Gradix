@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -17,10 +17,10 @@ interface MenuItem {
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.css']
 })
-export class MainLayoutComponent {
+export class MainLayoutComponent implements OnInit {
   private authService = inject(AuthService);
   
-  isSidebarOpen = signal(true);
+  isSidebarOpen = signal(false);
   currentUser = this.authService.currentUser;
 
   menuItems: MenuItem[] = [
@@ -32,6 +32,20 @@ export class MainLayoutComponent {
     { route: '/estadisticas', label: 'Estadísticas', icon: 'trending-up' },
     { route: '/reportes', label: 'Reportes y Boletas', icon: 'file-text' },
   ];
+
+  ngOnInit(): void {
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize')
+  onResize(): void {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize(): void {
+    const isDesktop = window.innerWidth >= 1024;
+    this.isSidebarOpen.set(isDesktop);
+  }
 
   toggleSidebar(): void {
     this.isSidebarOpen.update(val => !val);

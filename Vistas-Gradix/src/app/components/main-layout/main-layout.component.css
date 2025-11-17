@@ -1,1 +1,46 @@
-/* Estilos adicionales si son necesarios */
+/* Layout responsivo mejorado */
+
+/* Mobile and tablet responsive */
+@media (max-width: 1023px) {
+  /* Contenido principal SIEMPRE sin margin en móviles */
+  .transition-all {
+    margin-left: 0 !important;
+  }
+  
+  /* Header con padding reducido */
+  header .px-6 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  /* Main content con padding muy reducido */
+  main.p-6 {
+    padding: 0.5rem !important;
+  }
+
+  /* Asegurar que el sidebar no afecte el layout en móviles */
+  aside {
+    position: fixed !important;
+    z-index: 40 !important;
+  }
+}
+
+/* Para pantallas pequeñas (teléfonos) */
+@media (max-width: 640px) {
+  main.p-6 {
+    padding: 0.25rem !important;
+  }
+
+  header .px-6 {
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+}
+
+/* Mejorar la experiencia en tablets */
+@media (max-width: 1024px) and (min-width: 769px) {
+  /* Reducir padding en tablets */
+  main.p-6 {
+    padding: 1.5rem !important;
+  }
+}
