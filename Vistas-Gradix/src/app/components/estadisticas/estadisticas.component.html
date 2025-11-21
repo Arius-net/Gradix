@@ -1,0 +1,248 @@
+<div class="space-y-6">
+  <!-- Header -->
+  <div>
+    <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Estadísticas y Rendimiento</h1>
+    <p class="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">Análisis del desempeño académico</p>
+  </div>
+
+  <!-- Filtros -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-base font-semibold text-gray-900 mb-4">Periodo</h3>
+      <select
+        [value]="selectedPeriodo()"
+        (change)="onPeriodoChange($any($event.target).value)"
+        class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+      >
+        <option value="1">Primer Periodo</option>
+        <option value="2">Segundo Periodo</option>
+        <option value="3">Tercer Periodo</option>
+      </select>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-base font-semibold text-gray-900 mb-4">Materia</h3>
+      <select
+        [value]="selectedMateria()"
+        (change)="onMateriaChange($any($event.target).value)"
+        class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+      >
+        <option value="all">Todas las materias</option>
+        <option *ngFor="let materia of materias" [value]="materia.id">
+          {{ materia.nombre }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Cards de Estadísticas -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- Promedio Grupal -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-medium text-gray-600">Promedio Grupal</h3>
+        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+        </svg>
+      </div>
+      <div class="text-2xl font-bold text-gray-900">
+        {{ estadisticas().promedioGrupo.toFixed(1) }}
+      </div>
+      <div class="mt-2">
+        <div class="w-full bg-gray-200 rounded-full h-2">
+          <div
+            class="bg-blue-600 h-2 rounded-full transition-all duration-300"
+            [style.width.%]="estadisticas().promedioGrupo * 10"
+          ></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calificación Más Alta -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-medium text-gray-600">Calificación Más Alta</h3>
+        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+        </svg>
+      </div>
+      <div class="text-2xl font-bold text-gray-900">
+        {{ estadisticas().calificacionMasAlta.toFixed(1) }}
+      </div>
+      <p class="text-xs text-gray-500 mt-2">Mejor desempeño</p>
+    </div>
+
+    <!-- Calificación Más Baja -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-medium text-gray-600">Calificación Más Baja</h3>
+        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+        </svg>
+      </div>
+      <div class="text-2xl font-bold text-gray-900">
+        {{ estadisticas().calificacionMasBaja.toFixed(1) }}
+      </div>
+      <p class="text-xs text-gray-500 mt-2">Requiere atención</p>
+    </div>
+
+    <!-- Tasa de Aprobación -->
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-medium text-gray-600">Tasa de Aprobación</h3>
+        <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+      </div>
+      <div class="text-2xl font-bold text-gray-900">
+        {{ porcentajeAprobacion().toFixed(0) }}%
+      </div>
+      <p class="text-xs text-gray-500 mt-2">
+        {{ estadisticas().alumnosAprobados }} de {{ estadisticas().totalAlumnos }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Grid de Rendimiento y Distribución -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Rendimiento por Alumno -->
+    <div class="bg-white rounded-lg shadow">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-900">Rendimiento por Alumno</h2>
+        <p class="text-sm text-gray-500 mt-1">Ordenados por promedio de mayor a menor</p>
+      </div>
+      <div class="p-6">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Posición
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Alumno
+                </th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Promedio
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let item of estadisticas().detalleAlumnos.slice(0, 10); let i = index" class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  <svg *ngIf="i === 0" class="h-4 w-4 text-yellow-500 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                  {{ i + 1 }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {{ item.alumno }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-right">
+                  <span
+                    [class.bg-green-100]="item.promedio >= 6"
+                    [class.text-green-800]="item.promedio >= 6"
+                    [class.bg-red-100]="item.promedio < 6"
+                    [class.text-red-800]="item.promedio < 6"
+                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                  >
+                    {{ item.promedio.toFixed(1) }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="estadisticas().detalleAlumnos.length === 0" class="text-center py-8 text-gray-500">
+          <p>No hay datos disponibles para este periodo</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Distribución de Calificaciones -->
+    <div class="bg-white rounded-lg shadow">
+      <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-xl font-semibold text-gray-900">Distribución de Calificaciones</h2>
+        <p class="text-sm text-gray-500 mt-1">Aprobados vs Reprobados</p>
+      </div>
+      <div class="p-6 space-y-6">
+        <!-- Barra de Aprobados -->
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm text-gray-700">Aprobados (≥ 6.0)</span>
+            <span class="text-sm font-medium text-gray-900">{{ estadisticas().alumnosAprobados }}</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-3">
+            <div
+              class="bg-green-500 h-3 rounded-full transition-all duration-300"
+              [style.width.%]="porcentajeAprobacion()"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Barra de Reprobados -->
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm text-gray-700">Reprobados (&lt; 6.0)</span>
+            <span class="text-sm font-medium text-gray-900">{{ estadisticas().alumnosReprobados }}</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-3">
+            <div
+              class="bg-red-500 h-3 rounded-full transition-all duration-300"
+              [style.width.%]="100 - porcentajeAprobacion()"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Resumen en Cards -->
+        <div class="pt-4 border-t border-gray-200">
+          <div class="grid grid-cols-2 gap-4 text-center">
+            <div class="p-4 bg-green-50 rounded-lg">
+              <div class="text-2xl font-bold text-green-600">
+                {{ estadisticas().alumnosAprobados }}
+              </div>
+              <p class="text-sm text-gray-600 mt-1">Aprobados</p>
+            </div>
+            <div class="p-4 bg-red-50 rounded-lg">
+              <div class="text-2xl font-bold text-red-600">
+                {{ estadisticas().alumnosReprobados }}
+              </div>
+              <p class="text-sm text-gray-600 mt-1">Reprobados</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráfica de Comparativa (solo cuando es "Todas las materias") -->
+  <div *ngIf="selectedMateria() === 'all'" class="bg-white rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200">
+      <h2 class="text-xl font-semibold text-gray-900">Comparativa de Promedios por Materia</h2>
+      <p class="text-sm text-gray-500 mt-1">Periodo {{ selectedPeriodo() }}</p>
+    </div>
+    <div class="p-6">
+      <div class="space-y-4">
+        <div *ngFor="let item of chartData()" class="space-y-2">
+          <div class="flex justify-between items-center">
+            <span class="text-sm font-medium text-gray-700">{{ item.materia }}</span>
+            <span class="text-sm font-bold text-gray-900">{{ item.promedio.toFixed(1) }}</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-6">
+            <div
+              class="bg-indigo-600 h-6 rounded-full flex items-center justify-end pr-2 transition-all duration-300"
+              [style.width.%]="item.promedio * 10"
+            >
+              <span *ngIf="item.promedio > 3" class="text-xs font-medium text-white">
+                {{ item.promedio.toFixed(1) }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="chartData().length === 0" class="text-center py-8 text-gray-500">
+        <p>No hay materias disponibles</p>
+      </div>
+    </div>
+  </div>
+</div>

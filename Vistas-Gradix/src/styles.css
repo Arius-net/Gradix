@@ -2,3 +2,170 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Estilos globales responsive */
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Mejoras de scroll para toda la app */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db #f9fafb;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #f9fafb;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 4px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: #9ca3af;
+  }
+}
+
+@layer components {
+  /* Botones táctiles más grandes en móvil */
+  @media (max-width: 640px) {
+    button, a.button {
+      min-height: 44px;
+      padding: 0.75rem 1rem;
+    }
+
+    input, select, textarea {
+      min-height: 44px;
+      font-size: 16px; /* Evita el zoom automático en iOS */
+    }
+  }
+
+  /* Overflow horizontal con indicador */
+  .overflow-x-auto {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Tablas responsivas */
+  @media (max-width: 768px) {
+    table {
+      font-size: 0.875rem;
+    }
+
+    th, td {
+      padding: 0.5rem !important;
+    }
+  }
+
+  /* Cards más compactas en móvil */
+  @media (max-width: 640px) {
+    .card, .bg-white.rounded-lg.shadow {
+      border-radius: 0.5rem;
+    }
+
+    .p-6 {
+      padding: 1rem !important;
+    }
+
+    .px-6 {
+      padding-left: 1rem !important;
+      padding-right: 1rem !important;
+    }
+
+    .py-6 {
+      padding-top: 1rem !important;
+      padding-bottom: 1rem !important;
+    }
+  }
+
+  /* Mejora de espaciado en móvil */
+  @media (max-width: 640px) {
+    .space-y-6 > * + * {
+      margin-top: 1rem;
+    }
+
+    .gap-6 {
+      gap: 1rem;
+    }
+  }
+
+  /* Texto responsive */
+  @media (max-width: 640px) {
+    h1, .text-3xl {
+      font-size: 1.5rem !important;
+      line-height: 2rem !important;
+    }
+
+    h2, .text-2xl {
+      font-size: 1.25rem !important;
+      line-height: 1.75rem !important;
+    }
+
+    h3, .text-xl {
+      font-size: 1.125rem !important;
+      line-height: 1.75rem !important;
+    }
+  }
+}
+
+@layer utilities {
+  /* Utilidades para móvil */
+  .touch-none {
+    touch-action: none;
+  }
+
+  .touch-pan-x {
+    touch-action: pan-x;
+  }
+
+  .touch-pan-y {
+    touch-action: pan-y;
+  }
+
+  /* Scroll suave */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* Ocultar en móvil */
+  @media (max-width: 640px) {
+    .hide-mobile {
+      display: none !important;
+    }
+  }
+
+  /* Mostrar solo en móvil */
+  .show-mobile {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    .show-mobile {
+      display: block;
+    }
+  }
+
+  /* Ancho completo en móvil */
+  @media (max-width: 640px) {
+    .mobile-full-width {
+      width: 100% !important;
+    }
+  }
+}

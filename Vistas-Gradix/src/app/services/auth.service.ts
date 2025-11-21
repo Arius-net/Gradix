@@ -21,7 +21,7 @@ export class AuthService {
     }
   }
 
-  login(email: string, password: string, isRegistering: boolean = false): boolean {
+  login(email: string, password: string, isRegistering: boolean = false, nombre?: string): boolean {
     const storedDocente = localStorage.getItem('gradix_docente');
     
     if (!storedDocente) {
@@ -34,6 +34,9 @@ export class AuthService {
       // Registro
       docente.email = email;
       docente.password = password;
+      if (nombre) {
+        docente.nombre = nombre;
+      }
       localStorage.setItem('gradix_docente', JSON.stringify(docente));
       localStorage.setItem('gradix_currentUser', email);
       this.isAuthenticated.set(true);

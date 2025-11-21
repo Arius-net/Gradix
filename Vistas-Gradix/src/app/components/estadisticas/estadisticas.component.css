@@ -1,0 +1,377 @@
+/* Estilos para el componente de Estadísticas */
+
+.space-y-6 > * + * {
+  margin-top: 1.5rem;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+.space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+/* Progress bars */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Colors para badges */
+.bg-green-100 {
+  background-color: #d1fae5;
+}
+
+.text-green-800 {
+  color: #065f46;
+}
+
+.bg-red-100 {
+  background-color: #fee2e2;
+}
+
+.text-red-800 {
+  color: #991b1b;
+}
+
+.bg-green-50 {
+  background-color: #f0fdf4;
+}
+
+.bg-red-50 {
+  background-color: #fef2f2;
+}
+
+.text-green-600 {
+  color: #16a34a;
+}
+
+.text-red-600 {
+  color: #dc2626;
+}
+
+/* Progress bar colors */
+.bg-blue-600 {
+  background-color: #2563eb;
+}
+
+.bg-green-500 {
+  background-color: #22c55e;
+}
+
+.bg-red-500 {
+  background-color: #ef4444;
+}
+
+.bg-indigo-600 {
+  background-color: #4f46e5;
+}
+
+.bg-gray-200 {
+  background-color: #e5e7eb;
+}
+
+/* Yellow star color */
+.text-yellow-500 {
+  color: #eab308;
+}
+
+/* Hover effects para la tabla */
+tr.hover\:bg-gray-50:hover {
+  background-color: #f9fafb;
+  transition: background-color 0.15s ease-in-out;
+}
+
+/* Grid responsive */
+@media (max-width: 640px) {
+  .grid.grid-cols-1.md\\:grid-cols-2,
+  .grid.grid-cols-1.sm\\:grid-cols-2,
+  .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4,
+  .grid.grid-cols-1.lg\\:grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+
+  /* Cards más compactas */
+  .p-6 {
+    padding: 1rem !important;
+  }
+
+  /* Texto más pequeño */
+  .text-3xl {
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
+  }
+
+  .text-2xl {
+    font-size: 1.25rem !important;
+    line-height: 1.75rem !important;
+  }
+
+  /* Tablas scrollables */
+  th, td {
+    padding: 0.5rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* Botones más grandes para touch */
+  button {
+    min-height: 44px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 767px) {
+  .grid.grid-cols-1.sm\\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .grid.grid-cols-1.md\\:grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .grid.grid-cols-1.lg\\:grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 768px) {
+  .grid.grid-cols-1.md\\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  
+  .grid.grid-cols-1.lg\\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Estilos para la gráfica de barras personalizada */
+.rounded-full {
+  border-radius: 9999px;
+}
+
+/* Overflow para tablas */
+.overflow-x-auto {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* SVG inline */
+svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Font weights */
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+/* Text sizes */
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.text-base {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+/* Gap utilities */
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+/* Spacing */
+.space-y-6 {
+  margin-top: 0;
+}
+
+.space-y-4 {
+  margin-top: 0;
+}
+
+.space-y-2 {
+  margin-top: 0;
+}
+
+/* Border colors */
+.border-gray-200 {
+  border-color: #e5e7eb;
+}
+
+/* Text colors */
+.text-gray-400 {
+  color: #9ca3af;
+}
+
+.text-gray-500 {
+  color: #6b7280;
+}
+
+.text-gray-600 {
+  color: #4b5563;
+}
+
+.text-gray-700 {
+  color: #374151;
+}
+
+.text-gray-900 {
+  color: #111827;
+}
+
+/* Animaciones suaves para las barras */
+@keyframes growWidth {
+  from {
+    width: 0;
+  }
+}
+
+.animate-grow {
+  animation: growWidth 0.5s ease-out;
+}
+
+/* Mejoras de animación */
+@keyframes slideUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  /* Grid a columnas según tamaño */
+  .grid.grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+  
+  .grid.grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Headers más pequeños */
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.125rem !important;
+  }
+  
+  /* Cards más compactos */
+  .p-6 {
+    padding: 1rem !important;
+  }
+  
+  .p-4 {
+    padding: 0.75rem !important;
+  }
+  
+  /* Números más pequeños */
+  .text-3xl {
+    font-size: 1.5rem !important;
+  }
+  
+  .text-2xl {
+    font-size: 1.25rem !important;
+  }
+  
+  /* Tabla responsive */
+  table {
+    font-size: 0.875rem;
+  }
+  
+  th, td {
+    padding: 0.5rem !important;
+  }
+  
+  /* Select más compacto */
+  select {
+    padding: 0.5rem !important;
+    font-size: 0.875rem;
+  }
+  
+  /* Barras de progreso */
+  .h-6 {
+    height: 1.25rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens */
+  .grid.grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  h1 {
+    font-size: 1.25rem !important;
+  }
+  
+  .text-3xl {
+    font-size: 1.125rem !important;
+  }
+  
+  .text-2xl {
+    font-size: 1rem !important;
+  }
+  
+  /* Tabla muy compacta */
+  table {
+    font-size: 0.75rem;
+  }
+  
+  th, td {
+    padding: 0.375rem !important;
+  }
+  
+  /* Ocultar columnas menos importantes en mobile */
+  .hidden-mobile {
+    display: none;
+  }
+}

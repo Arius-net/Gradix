@@ -1,1 +1,93 @@
 /* Estilos adicionales si son necesarios */
+
+/* Mejoras para touch */
+@media (hover: none) {
+  button:hover {
+    transform: none;
+  }
+  
+  button:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  /* Headers más pequeños */
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.125rem !important;
+  }
+  
+  /* Cards más compactos */
+  .p-6 {
+    padding: 1rem !important;
+  }
+  
+  /* Modal full screen */
+  .fixed.inset-0 > div {
+    max-width: 100% !important;
+    height: 100vh !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    overflow-y: auto;
+  }
+  
+  /* Tabla responsive */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  table {
+    font-size: 0.875rem;
+  }
+  
+  th, td {
+    padding: 0.5rem !important;
+    white-space: nowrap;
+  }
+  
+  /* Botones más grandes */
+  button {
+    min-height: 44px;
+  }
+  
+  /* Form inputs */
+  input, select {
+    min-height: 44px;
+    font-size: 1rem;
+  }
+  
+  /* Botones stack vertical */
+  .grid.grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.25rem !important;
+  }
+  
+  .text-3xl {
+    font-size: 1.25rem !important;
+  }
+  
+  /* Tabla muy compacta */
+  table {
+    font-size: 0.75rem;
+  }
+  
+  th, td {
+    padding: 0.375rem !important;
+  }
+  
+  /* Iconos más pequeños */
+  svg {
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+}

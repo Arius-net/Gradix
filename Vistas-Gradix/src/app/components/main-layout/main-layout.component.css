@@ -1,1 +1,137 @@
-/* Estilos adicionales si son necesarios */
+/* Animación del overlay */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fixed.inset-0.bg-black {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Sidebar responsive */
+@media (max-width: 1023px) {
+  aside {
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+@media (min-width: 1024px) {
+  aside {
+    position: relative !important;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  /* Sidebar full width en mobile */
+  aside {
+    width: 80vw !important;
+    max-width: 320px;
+  }
+  
+  /* Header compacto */
+  header {
+    padding: 0.75rem 1rem !important;
+  }
+  
+  header .flex {
+    gap: 0.5rem !important;
+  }
+  
+  /* Ocultar texto largo en header mobile */
+  header .text-right p.text-xs {
+    display: none;
+  }
+  
+  /* Botón logout más compacto */
+  header button span {
+    display: none;
+  }
+  
+  /* Main content padding reducido */
+  main {
+    padding: 1rem !important;
+  }
+  
+  /* Nav items más grandes para touch */
+  nav a {
+    padding: 0.875rem 1rem !important;
+    font-size: 0.9375rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small devices */
+  aside {
+    width: 85vw !important;
+  }
+  
+  main {
+    padding: 0.75rem !important;
+  }
+  
+  /* Sidebar logo más pequeño */
+  aside .p-6 {
+    padding: 1rem !important;
+  }
+  
+  aside h2 {
+    font-size: 1rem !important;
+  }
+  
+  aside .text-xs {
+    font-size: 0.65rem !important;
+  }
+}
+
+/* Mejoras de scroll para el nav */
+nav {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+
+nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+nav::-webkit-scrollbar-thumb {
+  background-color: #d1d5db;
+  border-radius: 3px;
+}
+
+nav::-webkit-scrollbar-thumb:hover {
+  background-color: #9ca3af;
+}
+
+/* Transiciones suaves */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Touch optimizations */
+@media (hover: none) and (pointer: coarse) {
+  /* Mejoras para dispositivos táctiles */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Remover hover effects en touch */
+  button:hover, a:hover {
+    transform: none !important;
+  }
+  
+  button:active, a:active {
+    transform: scale(0.97);
+  }
+}

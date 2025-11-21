@@ -7,11 +7,18 @@ import { CriteriosEvaluacionComponent } from './components/criterios-evaluacion/
 import { CapturarCalificacionesComponent } from './components/capturar-calificaciones/capturar-calificaciones.component';
 import { EstadisticasComponent } from './components/estadisticas/estadisticas.component';
 import { ReportesComponent } from './components/reportes/reportes.component';
+import { LoginComponent } from './components/login/login.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
+  // Ruta pública de login
+  { path: 'login', component: LoginComponent },
+  
+  // Rutas protegidas
   {
     path: '',
     component: MainLayoutComponent,
+    canActivate: [authGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
@@ -23,5 +30,7 @@ export const routes: Routes = [
       { path: 'reportes', component: ReportesComponent },
     ]
   },
-  { path: '**', redirectTo: '' }
+  
+  // Redirección por defecto
+  { path: '**', redirectTo: 'login' }
 ];

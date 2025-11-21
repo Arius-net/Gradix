@@ -1,0 +1,245 @@
+/* Estilos para el componente de Criterios de Evaluación */
+
+.space-y-6 > * + * {
+  margin-top: 1.5rem;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+.space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+/* Animaciones para el modal */
+.fixed.inset-0 {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Estilos para el selector de materias */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.transition-colors {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Hover effects para la tabla */
+tr.hover\:bg-gray-50:hover {
+  background-color: #f9fafb;
+  transition: background-color 0.15s ease-in-out;
+}
+
+/* Barra de progreso */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Badge styles */
+.bg-blue-100 {
+  background-color: #dbeafe;
+}
+
+.text-blue-800 {
+  color: #1e40af;
+}
+
+.border-blue-200 {
+  border-color: #bfdbfe;
+}
+
+/* Alert styles */
+.bg-amber-50 {
+  background-color: #fffbeb;
+}
+
+.border-amber-200 {
+  border-color: #fde68a;
+}
+
+.text-amber-600 {
+  color: #d97706;
+}
+
+.text-amber-800 {
+  color: #92400e;
+}
+
+.text-amber-500 {
+  color: #f59e0b;
+}
+
+/* Progress bar colors */
+.bg-blue-600 {
+  background-color: #2563eb;
+}
+
+.bg-green-600 {
+  background-color: #16a34a;
+}
+
+.bg-red-600 {
+  background-color: #dc2626;
+}
+
+.bg-gray-200 {
+  background-color: #e5e7eb;
+}
+
+/* Indigo colors for selected materia */
+.bg-indigo-50 {
+  background-color: #eef2ff;
+}
+
+.border-indigo-500 {
+  border-color: #6366f1;
+}
+
+/* Disabled button styles */
+button:disabled {
+  opacity: 0.6;
+}
+
+/* Estilos para botones de acción */
+button svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Flex shrink */
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .grid.grid-cols-1.lg\\:grid-cols-3 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid.grid-cols-1.lg\\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  
+  .lg\\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+}
+
+/* Input number arrows removal for cleaner look */
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* Mejoras para touch */
+@media (hover: none) {
+  button:hover {
+    transform: none;
+  }
+  
+  button:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  /* Grid a una columna */
+  .grid.grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Headers más pequeños */
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.125rem !important;
+  }
+  
+  /* Cards más compactos */
+  .p-6 {
+    padding: 1rem !important;
+  }
+  
+  /* Inputs más grandes para touch */
+  input, select {
+    min-height: 44px;
+    font-size: 1rem;
+  }
+  
+  /* Botones full width */
+  .flex.gap-2 {
+    flex-direction: column;
+  }
+  
+  .flex.gap-2 button {
+    width: 100%;
+  }
+  
+  /* Progress bar más visible */
+  .progress-bar {
+    height: 1rem !important;
+  }
+  
+  /* Tabla responsive */
+  table {
+    font-size: 0.875rem;
+  }
+  
+  th, td {
+    padding: 0.5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.25rem !important;
+  }
+  
+  .text-3xl {
+    font-size: 1.25rem !important;
+  }
+  
+  .space-y-6 > * + * {
+    margin-top: 1rem !important;
+  }
+  
+  /* Badges más pequeños */
+  .text-xs {
+    font-size: 0.65rem !important;
+  }
+  
+  table {
+    font-size: 0.75rem;
+  }
+  
+  th, td {
+    padding: 0.375rem !important;
+  }
+}

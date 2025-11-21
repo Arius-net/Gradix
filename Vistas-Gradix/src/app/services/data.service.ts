@@ -138,4 +138,9 @@ export class DataService {
       this.campos.set(JSON.parse(stored));
     }
   }
+
+  updateCampos(campos: CampoFormativo[]): void {
+    this.campos.set(campos);
+    localStorage.setItem('gradix_campos', JSON.stringify(campos));
+  }
 }

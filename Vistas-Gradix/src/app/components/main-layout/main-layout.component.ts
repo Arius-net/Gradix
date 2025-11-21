@@ -36,4 +36,19 @@ export class MainLayoutComponent {
   toggleSidebar(): void {
     this.isSidebarOpen.update(val => !val);
   }
+
+  closeSidebarOnMobile(): void {
+    // Cerrar sidebar en móvil después de seleccionar una opción
+    if (window.innerWidth < 1024) {
+      this.isSidebarOpen.set(false);
+    }
+  }
+
+  getDocenteName(): string {
+    return this.authService.getDocenteName();
+  }
+
+  logout(): void {
+    this.authService.logout();
+  }
 }

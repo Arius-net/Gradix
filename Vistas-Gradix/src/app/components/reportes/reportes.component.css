@@ -1,0 +1,352 @@
+/* Estilos para el componente de Reportes */
+
+.space-y-6 > * + * {
+  margin-top: 1.5rem;
+}
+
+/* Text colors */
+.text-green-600 {
+  color: #16a34a;
+}
+
+.text-red-600 {
+  color: #dc2626;
+}
+
+.text-gray-500 {
+  color: #6b7280;
+}
+
+.text-gray-600 {
+  color: #4b5563;
+}
+
+.text-gray-700 {
+  color: #374151;
+}
+
+.text-gray-900 {
+  color: #111827;
+}
+
+.text-indigo-600 {
+  color: #4f46e5;
+}
+
+/* Border colors */
+.border-indigo-600 {
+  border-color: #4f46e5;
+}
+
+.border-gray-200 {
+  border-color: #e5e7eb;
+}
+
+.border-gray-300 {
+  border-color: #d1d5db;
+}
+
+.border-gray-400 {
+  border-color: #9ca3af;
+}
+
+/* Background colors */
+.bg-gray-50 {
+  background-color: #f9fafb;
+}
+
+/* Font weights */
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+/* Mobile responsive - antes del print */
+@media screen and (max-width: 768px) {
+  /* Headers más pequeños */
+  h1 {
+    font-size: 1.5rem !important;
+  }
+  
+  h2 {
+    font-size: 1.125rem !important;
+  }
+  
+  /* Cards más compactos */
+  .p-6 {
+    padding: 1rem !important;
+  }
+  
+  /* Select y botones */
+  select {
+    padding: 0.5rem !important;
+    font-size: 0.875rem;
+    width: 100%;
+  }
+  
+  button {
+    width: 100%;
+    padding: 0.75rem !important;
+  }
+  
+  /* Reporte card scrollable */
+  .max-w-4xl {
+    max-width: 100% !important;
+  }
+  
+  /* Tabla en boleta más pequeña */
+  .boleta-table {
+    font-size: 0.75rem !important;
+  }
+  
+  .boleta-table th,
+  .boleta-table td {
+    padding: 0.375rem !important;
+  }
+  
+  /* Logos y firmas más pequeños */
+  .logo-sep {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  
+  .firma-line {
+    width: 120px !important;
+  }
+  
+  /* Espacios reducidos */
+  .space-y-6 > * + * {
+    margin-top: 1rem !important;
+  }
+  
+  /* Grid responsive */
+  .grid.grid-cols-1.md\:grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .grid.grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h1 {
+    font-size: 1.25rem !important;
+  }
+  
+  .text-3xl {
+    font-size: 1.25rem !important;
+  }
+  
+  /* Boleta muy compacta */
+  .boleta-table {
+    font-size: 0.65rem !important;
+  }
+  
+  .p-8 {
+    padding: 1rem !important;
+  }
+  
+  /* Ocultar decoraciones en mobile */
+  .border-t-4 {
+    border-top-width: 2px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .grid.grid-cols-1.md\\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .grid.grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Gap utilities */
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.gap-8 {
+  gap: 2rem;
+}
+
+/* SVG inline */
+button svg,
+div svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* ========================================
+   ESTILOS PARA IMPRESIÓN
+   ======================================== */
+
+@media print {
+  /* Ocultar elementos no necesarios en la impresión */
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  /* Reset de márgenes y padding del body */
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Ocultar todo excepto el contenido del reporte */
+  body * {
+    visibility: hidden;
+  }
+
+  /* Mostrar solo el reporte */
+  #report-content,
+  #report-content * {
+    visibility: visible;
+  }
+
+  #report-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 20px;
+  }
+
+  /* Estilos específicos para la boleta impresa */
+  .bg-white {
+    background-color: white !important;
+  }
+
+  .shadow {
+    box-shadow: none !important;
+  }
+
+  .rounded-lg {
+    border-radius: 0 !important;
+  }
+
+  /* Asegurar que las tablas se impriman correctamente */
+  table {
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tfoot {
+    display: table-footer-group;
+  }
+
+  /* Bordes visibles en impresión */
+  .border-b-2,
+  .border-t-2,
+  .border-t,
+  .border-b {
+    border-style: solid !important;
+  }
+
+  /* Colores en impresión */
+  .text-green-600 {
+    color: #16a34a !important;
+  }
+
+  .text-red-600 {
+    color: #dc2626 !important;
+  }
+
+  .text-indigo-600 {
+    color: #4f46e5 !important;
+  }
+
+  /* Tamaño de página */
+  @page {
+    size: letter;
+    margin: 1cm;
+  }
+
+  /* Evitar saltos de página dentro de secciones importantes */
+  .space-y-6 > div {
+    page-break-inside: avoid;
+  }
+
+  /* Asegurar que el header se vea bien */
+  .border-b-2.border-indigo-600 {
+    border-bottom: 2px solid #4f46e5 !important;
+    padding-bottom: 1rem !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* Estilos para la tabla */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th, td {
+    border: 1px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+  }
+
+  th {
+    background-color: #f9fafb !important;
+  }
+
+  /* Firmas */
+  .border-t-2.border-gray-400 {
+    border-top: 2px solid #9ca3af !important;
+    margin-top: 3rem !important;
+    padding-top: 0.5rem !important;
+  }
+
+  /* Footer */
+  .text-xs.text-gray-500.text-center {
+    margin-top: 1rem !important;
+    padding-top: 1rem !important;
+    border-top: 1px solid #e5e7eb !important;
+  }
+}
+
+/* Estilos adicionales para una mejor presentación */
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
