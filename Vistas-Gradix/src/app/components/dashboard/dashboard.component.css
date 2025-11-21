@@ -1,71 +1,237 @@
-/* Estilos para el Dashboard */
+/* Dashboard Container */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
 
-/* Mobile responsive */
-@media (max-width: 768px) {
-  /* Grid de stats a 2 columnas */
-  .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 {
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 0.75rem !important;
+/* Header */
+.dashboard-header h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 0.5rem 0;
+}
+
+.dashboard-header p {
+  color: #4b5563;
+  margin: 0;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.stat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.stat-header h3 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4b5563;
+  margin: 0;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0.25rem 0;
+}
+
+.stat-description {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0.25rem 0 0 0;
+}
+
+/* Sections Grid */
+.sections-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.section-card {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.section-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.section-header h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 0.25rem 0;
+}
+
+.section-header p {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin: 0;
+}
+
+.section-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Quick Access Items */
+.quick-access-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.quick-access-item:hover {
+  background-color: #f3f4f6;
+}
+
+.item-text {
+  flex: 1;
+}
+
+.item-title {
+  font-weight: 500;
+  color: #111827;
+  margin: 0 0 0.25rem 0;
+  font-size: 0.875rem;
+}
+
+.item-description {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Activity Items */
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.activity-item:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.activity-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.activity-dot-green {
+  background-color: #10b981;
+}
+
+.activity-dot-blue {
+  background-color: #3b82f6;
+}
+
+.activity-dot-purple {
+  background-color: #8b5cf6;
+}
+
+.activity-text {
+  flex: 1;
+}
+
+.activity-title {
+  font-size: 0.875rem;
+  color: #111827;
+  margin: 0 0 0.25rem 0;
+}
+
+.activity-time {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
   }
-  
-  /* Grid de secciones a 1 columna */
-  .grid.grid-cols-1.lg\:grid-cols-2 {
-    grid-template-columns: 1fr !important;
+
+  .sections-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  /* Headers más pequeños */
-  h1 {
-    font-size: 1.5rem !important;
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
-  
-  h2 {
-    font-size: 1.125rem !important;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .dashboard-header h1 {
+    font-size: 1.5rem;
   }
-  
-  /* Cards más compactos */
-  .p-6 {
-    padding: 1rem !important;
+
+  .stat-value {
+    font-size: 1.25rem;
   }
-  
-  /* Stats cards más pequeños */
-  .text-3xl {
-    font-size: 1.5rem !important;
+
+  .stat-card {
+    padding: 1rem;
   }
-  
-  .text-2xl {
-    font-size: 1.25rem !important;
+
+  .section-header {
+    padding: 1rem;
   }
-  
-  /* Accesos rápidos más compactos */
-  .space-y-3 > * + * {
-    margin-top: 0.5rem !important;
+
+  .section-content {
+    padding: 1rem;
   }
-  
-  .flex.items-center.gap-3 {
-    gap: 0.75rem !important;
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
 }
 
 @media (max-width: 480px) {
-  /* Stats a 1 columna en pantallas muy pequeñas */
-  .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-4 {
-    grid-template-columns: 1fr !important;
+  .stats-grid {
+    grid-template-columns: 1fr;
   }
-  
-  h1 {
-    font-size: 1.25rem !important;
-  }
-  
-  .text-3xl {
-    font-size: 1.25rem !important;
-  }
-  
-  .text-2xl {
-    font-size: 1.125rem !important;
-  }
-  
-  /* Reducir espaciado general */
-  .space-y-6 > * + * {
-    margin-top: 1rem !important;
+
+  .dashboard-header h1 {
+    font-size: 1.25rem;
   }
 }

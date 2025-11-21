@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
@@ -17,10 +17,10 @@ interface MenuItem {
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.css']
 })
-export class MainLayoutComponent {
+export class MainLayoutComponent implements OnInit {
   private authService = inject(AuthService);
   
-  isSidebarOpen = signal(true);
+  isSidebarOpen = signal(false);
   currentUser = this.authService.currentUser;
 
   menuItems: MenuItem[] = [
@@ -33,13 +33,20 @@ export class MainLayoutComponent {
     { route: '/reportes', label: 'Reportes y Boletas', icon: 'file-text' },
   ];
 
+  ngOnInit(): void {
+    // Iniciar con el sidebar abierto en pantallas grandes
+    if (typeof window !== 'undefined') {
+      this.isSidebarOpen.set(window.innerWidth >= 1024);
+    }
+  }
+
   toggleSidebar(): void {
     this.isSidebarOpen.update(val => !val);
   }
 
   closeSidebarOnMobile(): void {
     // Cerrar sidebar en móvil después de seleccionar una opción
-    if (window.innerWidth < 1024) {
+    if (typeof window !== 'undefined' && window.innerWidth < 1024) {
       this.isSidebarOpen.set(false);
     }
   }
