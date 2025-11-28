@@ -8,29 +8,45 @@ import com.gradix.services.AuthService
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.receive
+import io.ktor.server.request.receiveText
 import io.ktor.server.response.respond
 
 class AuthController(private val authService: AuthService) {
 
     suspend fun register(call: ApplicationCall) {
         try {
-            val request = call.receive<DocenteRequest>()
+            // Log para ver el body raw que llega
+            val bodyText = call.receiveText()
+            call.application.environment.log.info("Body recibido en /register: $bodyText")
 
-            // Verificar si el correo ya existe
-            val existingDocente = authService.findByCorreo(request.correo)
-            if (existingDocente != null) {
-                call.respond(HttpStatusCode.Conflict, mapOf("error" to "El correo ya está registrado"))
-                return
-            }
+            // Intentar parsear manualmente para debug
+            try {
+                val request = kotlinx.serialization.json.Json.decodeFromString<DocenteRequest>(bodyText)
+                call.application.environment.log.info("Request parseado correctamente: $request")
 
-            val docente = authService.register(request)
-            if (docente != null) {
-                val token = Security.generateToken(docente.id, docente.correo)
-                call.respond(HttpStatusCode.Created, LoginResponse(token, docente))
-            } else {
-                call.respond(HttpStatusCode.InternalServerError, mapOf("error" to "Error al registrar docente"))
+                // Verificar si el correo ya existe
+                val existingDocente = authService.findByCorreo(request.correo)
+                if (existingDocente != null) {
+                    call.respond(HttpStatusCode.Conflict, mapOf("error" to "El correo ya está registrado"))
+                    return
+                }
+
+                val docente = authService.register(request)
+                if (docente != null) {
+                    val token = Security.generateToken(docente.id, docente.correo)
+                    call.respond(HttpStatusCode.Created, LoginResponse(token, docente))
+                } else {
+                    call.respond(HttpStatusCode.InternalServerError, mapOf("error" to "Error al registrar docente"))
+                }
+            } catch (e: Exception) {
+                call.application.environment.log.error("Error al parsear request: ${e.message}", e)
+                call.respond(HttpStatusCode.BadRequest, mapOf(
+                    "error" to "Error al parsear la solicitud: ${e.message}",
+                    "details" to e.toString()
+                ))
             }
         } catch (e: Exception) {
+            call.application.environment.log.error("Error al recibir body: ${e.message}", e)
             call.respond(HttpStatusCode.BadRequest, mapOf("error" to (e.message ?: "Error en la solicitud")))
         }
     }

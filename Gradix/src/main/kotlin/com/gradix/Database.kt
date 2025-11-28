@@ -17,7 +17,7 @@ object DatabaseFactory {
             driverClassName = System.getenv("DB_DRIVER") ?: "org.postgresql.Driver"
             jdbcUrl = System.getenv("DB_URL") ?: "jdbc:postgresql://localhost:5432/Gradix"
             username = System.getenv("DB_USER") ?: "postgres"
-            password = System.getenv("DB_PASSWORD") ?: "0620"
+            password = System.getenv("DB_PASSWORD") ?: "anona29050XD"
             maximumPoolSize = 3
             isAutoCommit = false
             transactionIsolation = "TRANSACTION_REPEATABLE_READ"

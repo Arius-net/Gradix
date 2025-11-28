@@ -1,0 +1,148 @@
+-- TABLA DOCENTE: No requiere cambios.
+CREATE TABLE docente (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    correo VARCHAR(100) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    escuela VARCHAR(120) NOT NULL,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- TABLA CAMPO_FORMATIVO: No requiere cambios.
+CREATE TABLE campo_formativo (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL
+);
+
+-- TABLA MATERIA: No requiere cambios.
+CREATE TABLE materia (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    campo_id INT NOT NULL,
+    docente_id INT NOT NULL, -- Docente que imparte esta materia
+    FOREIGN KEY (campo_id) REFERENCES campo_formativo(id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    FOREIGN KEY (docente_id) REFERENCES docente(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- TABLA ALUMNO: Se ELIMINA la columna docente_id.
+CREATE TABLE alumno (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
+    -- docente_id INT NOT NULL, -- ¡ELIMINADO! La relación es a través de las calificaciones/materia.
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    -- FOREIGN KEY (docente_id) REFERENCES docente(id) ON UPDATE CASCADE ON DELETE CASCADE -- ¡ELIMINADO!
+);
+
+-- TABLA CRITERIO: No requiere cambios.
+CREATE TABLE criterio (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    porcentaje NUMERIC(5,2) NOT NULL CHECK (porcentaje >= 0 AND porcentaje <= 100),
+    materia_id INT NOT NULL,
+    FOREIGN KEY (materia_id) REFERENCES materia(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- TABLA CALIFICACION: No requiere cambios.
+CREATE TABLE calificacion (
+    id SERIAL PRIMARY KEY,
+    alumno_id INT NOT NULL,
+    criterio_id INT NOT NULL,
+    valor NUMERIC(5,2) NOT NULL CHECK (valor >= 0 AND valor <= 10),
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (alumno_id) REFERENCES alumno(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (criterio_id) REFERENCES criterio(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- VISTA v_promedios: Se ajusta el GROUP BY y las columnas seleccionadas.
+CREATE OR REPLACE VIEW v_promedios AS
+SELECT
+    a.id AS alumno_id,
+    a.nombre || ' ' || a.apellidos AS alumno,
+    m.id AS materia_id,
+    m.nombre AS materia,
+    d.id AS docente_id,
+    d.nombre AS docente,
+    ROUND(SUM(c.valor * (cr.porcentaje / 100)), 2) AS promedio_final
+FROM calificacion c
+INNER JOIN alumno a ON c.alumno_id = a.id
+INNER JOIN criterio cr ON c.criterio_id = cr.id
+INNER JOIN materia m ON cr.materia_id = m.id
+INNER JOIN docente d ON m.docente_id = d.id
+-- Agrupación corregida: Un promedio por ALUMNO y por MATERIA (impartida por un DOCENTE específico)
+GROUP BY a.id, a.nombre, a.apellidos, m.id, m.nombre, d.id, d.nombre;
+
+-- INSERTS: No requieren cambios.
+INSERT INTO campo_formativo (nombre) VALUES
+('Lenguaje y Comunicación'),
+('Pensamiento Matemático'),
+('Exploración y Comprensión del Mundo Natural y Social'),
+('Desarrollo Personal y Social');
+
+-- FUNCIÓN validar_criterios_sumatoria (INSERT): No requiere cambios.
+CREATE OR REPLACE FUNCTION validar_criterios_sumatoria()
+RETURNS TRIGGER AS $$
+DECLARE
+    suma NUMERIC(5,2);
+BEGIN
+    -- Suma los porcentajes existentes para la materia
+    SELECT COALESCE(SUM(porcentaje), 0) INTO suma
+    FROM criterio WHERE materia_id = NEW.materia_id;
+
+    -- Verifica si la suma de existentes MÁS el nuevo supera el 100%
+    IF (suma + NEW.porcentaje) > 100 THEN
+        RAISE EXCEPTION 'La suma de porcentajes supera el 100%% para la materia %', NEW.materia_id;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- TRIGGER trg_validar_criterios_insert: No requiere cambios.
+CREATE TRIGGER trg_validar_criterios_insert
+BEFORE INSERT ON criterio
+FOR EACH ROW
+EXECUTE FUNCTION validar_criterios_sumatoria();
+
+-- FUNCIÓN validar_criterios_update: Se corrige la lógica de la subconsulta.
+CREATE OR REPLACE FUNCTION validar_criterios_update()
+RETURNS TRIGGER AS $$
+DECLARE
+    suma NUMERIC(5,2);
+BEGIN
+    -- Suma los porcentajes existentes para la NUEVA materia, excluyendo el criterio que se está actualizando
+    SELECT COALESCE(SUM(porcentaje), 0) INTO suma
+    FROM criterio
+    WHERE materia_id = NEW.materia_id -- Se usa NEW.materia_id para manejar posibles cambios de materia
+    AND id <> OLD.id;
+
+    -- Verifica si la suma de existentes MÁS el nuevo valor supera el 100%
+    IF (suma + NEW.porcentaje) > 100 THEN
+        RAISE EXCEPTION 'La suma de porcentajes supera el 100%% para la materia %', NEW.materia_id;
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- TRIGGER trg_validar_criterios_update: No requiere cambios.
+CREATE TRIGGER trg_validar_criterios_update
+BEFORE UPDATE ON criterio
+FOR EACH ROW
+EXECUTE FUNCTION validar_criterios_update();
+
+-- VISTA v_reporte_calificaciones: No requiere cambios.
+CREATE OR REPLACE VIEW v_reporte_calificaciones AS
+SELECT
+    d.nombre AS docente,
+    m.nombre AS materia,
+    cf.nombre AS campo_formativo,
+    a.nombre || ' ' || a.apellidos AS alumno,
+    cr.nombre AS criterio,
+    cr.porcentaje,
+    c.valor AS calificacion,
+    ROUND(c.valor * (cr.porcentaje / 100), 2) AS ponderado
+FROM calificacion c
+INNER JOIN criterio cr ON c.criterio_id = cr.id
+INNER JOIN alumno a ON c.alumno_id = a.id
+INNER JOIN materia m ON cr.materia_id = m.id
+INNER JOIN campo_formativo cf ON m.campo_id = cf.id
+INNER JOIN docente d ON m.docente_id = d.id;

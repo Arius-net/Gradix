@@ -63,6 +63,24 @@ class MateriaController {
         try {
             val request = call.receive<MateriaRequest>()
 
+            // Validaciones
+            val errores = mutableListOf<String>()
+
+            if (request.nombre.isBlank()) {
+                errores.add("El nombre de la materia es obligatorio")
+            }
+            if (request.campoId == null) {
+                errores.add("El campoId es obligatorio")
+            }
+            if (request.docenteId == null) {
+                errores.add("El docenteId es obligatorio")
+            }
+
+            if (errores.isNotEmpty()) {
+                call.respond(HttpStatusCode.BadRequest, mapOf("errores" to errores))
+                return
+            }
+
             val id = dbQuery {
                 Materias.insert {
                     it[nombre] = request.nombre

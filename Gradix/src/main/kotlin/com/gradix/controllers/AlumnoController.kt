@@ -4,6 +4,8 @@ import com.gradix.dbQuery
 import com.gradix.models.*
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import org.jetbrains.exposed.sql.*
@@ -13,15 +15,8 @@ class AlumnoController {
 
     suspend fun getAll(call: ApplicationCall) {
         try {
-            val docenteId = call.request.queryParameters["docenteId"]?.toIntOrNull()
-
             val alumnos: List<Alumno> = dbQuery {
-                if (docenteId != null) {
-                    Alumnos.select { Alumnos.docenteId eq docenteId }
-                        .map { mapToAlumno(it) }
-                } else {
-                    Alumnos.selectAll().map { mapToAlumno(it) }
-                }
+                Alumnos.selectAll().map { mapToAlumno(it) }
             }
 
             call.respond(HttpStatusCode.OK, alumnos)
@@ -58,19 +53,31 @@ class AlumnoController {
         try {
             val request = call.receive<AlumnoRequest>()
 
+            // Obtener el docente_id del JWT token
+            val principal = call.principal<JWTPrincipal>()
+            val docenteId = principal?.payload?.getClaim("userId")?.asInt()
+
+            if (docenteId == null) {
+                call.respond(HttpStatusCode.Unauthorized, mapOf("error" to "No autorizado - token inválido"))
+                return
+            }
+
+            // Combinar apellidos en una sola columna para la BD
+            val apellidosCombinados = "${request.apellidoPaterno} ${request.apellidoMaterno}".trim()
+
             val id = dbQuery {
                 Alumnos.insert {
                     it[nombre] = request.nombre
-                    it[apellidos] = request.apellidos
-                    it[docenteId] = request.docenteId
-                }[Alumnos.id]
+                    it[apellidos] = apellidosCombinados
+                    it[Alumnos.docenteId] = docenteId
+                } get Alumnos.id
             }
 
             val alumno = Alumno(
                 id = id,
                 nombre = request.nombre,
-                apellidos = request.apellidos,
-                docenteId = request.docenteId,
+                apellidoPaterno = request.apellidoPaterno,
+                apellidoMaterno = request.apellidoMaterno,
                 fechaRegistro = null
             )
             call.respond(HttpStatusCode.Created, alumno)
@@ -89,11 +96,13 @@ class AlumnoController {
 
             val request = call.receive<AlumnoRequest>()
 
+            // Combinar apellidos en una sola columna para la BD
+            val apellidosCombinados = "${request.apellidoPaterno} ${request.apellidoMaterno}".trim()
+
             val updated = dbQuery {
                 Alumnos.update({ Alumnos.id eq id }) {
                     it[nombre] = request.nombre
-                    it[apellidos] = request.apellidos
-                    it[docenteId] = request.docenteId
+                    it[apellidos] = apellidosCombinados
                 } > 0
             }
 
@@ -138,11 +147,19 @@ class AlumnoController {
         }
     }
 
-    private fun mapToAlumno(row: ResultRow): Alumno = Alumno(
-        id = row[Alumnos.id],
-        nombre = row[Alumnos.nombre],
-        apellidos = row[Alumnos.apellidos],
-        docenteId = row[Alumnos.docenteId],
-        fechaRegistro = row[Alumnos.fechaRegistro]
-    )
+    private fun mapToAlumno(row: ResultRow): Alumno {
+        // Separar apellidos de la BD en apellidoPaterno y apellidoMaterno
+        val apellidosCompletos = row[Alumnos.apellidos]
+        val apellidosParts = apellidosCompletos.split(" ", limit = 2)
+        val apellidoPaterno = apellidosParts.getOrElse(0) { "" }
+        val apellidoMaterno = apellidosParts.getOrElse(1) { "" }
+
+        return Alumno(
+            id = row[Alumnos.id],
+            nombre = row[Alumnos.nombre],
+            apellidoPaterno = apellidoPaterno,
+            apellidoMaterno = apellidoMaterno,
+            fechaRegistro = row[Alumnos.fechaRegistro]
+        )
+    }
 }

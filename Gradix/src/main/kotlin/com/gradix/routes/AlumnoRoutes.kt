@@ -7,25 +7,26 @@ import io.ktor.server.routing.*
 
 fun Route.alumnoRoutes(alumnoController: AlumnoController) {
     route("/alumnos") {
-        // Sin autenticación por ahora para facilitar pruebas
-        get {
-            alumnoController.getAll(call)
-        }
+        authenticate("jwt") {
+            get {
+                alumnoController.getAll(call)
+            }
 
-        get("/{id}") {
-            alumnoController.getById(call)
-        }
+            get("/{id}") {
+                alumnoController.getById(call)
+            }
 
-        post {
-            alumnoController.create(call)
-        }
+            post {
+                alumnoController.create(call)
+            }
 
-        put("/{id}") {
-            alumnoController.update(call)
-        }
+            put("/{id}") {
+                alumnoController.update(call)
+            }
 
-        delete("/{id}") {
-            alumnoController.delete(call)
+            delete("/{id}") {
+                alumnoController.delete(call)
+            }
         }
     }
 }
