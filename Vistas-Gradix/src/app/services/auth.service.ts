@@ -1,11 +1,16 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Docente } from '../models';
+import { ApiAuthService } from './api-auth.service';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private apiAuthService = inject(ApiAuthService);
+  private dataService = inject(DataService);
+  
   isAuthenticated = signal<boolean>(false);
   currentUser = signal<string | null>(null);
 
@@ -21,47 +26,96 @@ export class AuthService {
     }
   }
 
-  login(email: string, password: string, isRegistering: boolean = false, nombre?: string): boolean {
-    const storedDocente = localStorage.getItem('gradix_docente');
-    
-    if (!storedDocente) {
-      return false;
-    }
-
-    const docente: Docente = JSON.parse(storedDocente);
-
+  login(email: string, password: string, isRegistering: boolean = false, nombre?: string): Promise<boolean> {
     if (isRegistering) {
-      // Registro
-      docente.email = email;
-      docente.password = password;
-      if (nombre) {
-        docente.nombre = nombre;
-      }
-      localStorage.setItem('gradix_docente', JSON.stringify(docente));
-      localStorage.setItem('gradix_currentUser', email);
-      this.isAuthenticated.set(true);
-      this.currentUser.set(email);
-      return true;
+      // Registro con API
+      return new Promise((resolve) => {
+        this.apiAuthService.register({
+          nombre: nombre || email.split('@')[0],
+          correo: email,
+          password: password
+        }).subscribe({
+          next: (response) => {
+            console.log('✅ Registro exitoso:', response);
+            if (response.token) {
+              localStorage.setItem('gradix_token', response.token);
+            }
+            if (response.user) {
+              localStorage.setItem('gradix_docenteId', response.user.id.toString());
+            }
+            localStorage.setItem('gradix_currentUser', email);
+            if (nombre) {
+              localStorage.setItem('gradix_userName', nombre);
+            }
+            this.isAuthenticated.set(true);
+            this.currentUser.set(email);
+            
+            // Cargar todos los datos desde la API después de registro exitoso
+            this.dataService.loadData();
+            
+            resolve(true);
+          },
+          error: (err) => {
+            console.error('❌ Error en registro:', err);
+            console.error('Detalles del error:', err.error);
+            resolve(false);
+          }
+        });
+      });
     } else {
-      // Login
-      if (docente.email === email && docente.password === password) {
-        localStorage.setItem('gradix_currentUser', email);
-        this.isAuthenticated.set(true);
-        this.currentUser.set(email);
-        return true;
-      }
-      return false;
+      // Login con API
+      return new Promise((resolve) => {
+        this.apiAuthService.login({
+          correo: email,
+          password: password
+        }).subscribe({
+          next: (response) => {
+            console.log('✅ Login exitoso:', response);
+            if (response.token) {
+              localStorage.setItem('gradix_token', response.token);
+            }
+            if (response.user) {
+              localStorage.setItem('gradix_docenteId', response.user.id.toString());
+            }
+            localStorage.setItem('gradix_currentUser', email);
+            this.isAuthenticated.set(true);
+            this.currentUser.set(email);
+            
+            // Cargar todos los datos desde la API después de login exitoso
+            this.dataService.loadData();
+            
+            resolve(true);
+          },
+          error: (err) => {
+            console.error('❌ Error en login:', err);
+            console.error('Detalles del error:', err.error);
+            resolve(false);
+          }
+        });
+      });
     }
   }
 
   logout(): void {
     localStorage.removeItem('gradix_currentUser');
+    localStorage.removeItem('gradix_token');
+    localStorage.removeItem('gradix_docenteId');
     this.isAuthenticated.set(false);
     this.currentUser.set(null);
     this.router.navigate(['/login']);
   }
 
+  getDocenteId(): number {
+    const id = localStorage.getItem('gradix_docenteId');
+    return id ? parseInt(id, 10) : 1;
+  }
+
   getDocenteName(): string {
+    const userName = localStorage.getItem('gradix_userName');
+    if (userName) {
+      return userName;
+    }
+    
     const storedDocente = localStorage.getItem('gradix_docente');
     if (storedDocente) {
       const docente: Docente = JSON.parse(storedDocente);
@@ -70,3 +124,4 @@ export class AuthService {
     return 'Docente';
   }
 }
+

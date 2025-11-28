@@ -26,7 +26,7 @@ export class LoginComponent {
     private router: Router
   ) {}
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     this.errorMessage.set('');
     this.successMessage.set('');
 
@@ -60,7 +60,7 @@ export class LoginComponent {
       }
     }
 
-    const success = this.authService.login(
+    const success = await this.authService.login(
       this.email(),
       this.password(),
       this.isRegistering(),
@@ -77,7 +77,7 @@ export class LoginComponent {
         this.router.navigate(['/']);
       }, 1000);
     } else {
-      this.errorMessage.set('Credenciales incorrectas');
+      this.errorMessage.set('Credenciales incorrectas o error del servidor');
     }
   }
 

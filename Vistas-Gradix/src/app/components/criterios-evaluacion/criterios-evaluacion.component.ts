@@ -111,36 +111,39 @@ export class CriteriosEvaluacionComponent implements OnInit {
       return;
     }
 
-    let updatedCriterios: CriterioEvaluacion[];
     const editing = this.editingCriterio();
 
+    // Validar ponderaciones antes de enviar
+    const criteriosMateria = this.criterios.filter(c => 
+      c.materiaId === this.formData.materiaId && (!editing || c.id !== editing.id)
+    );
+    const sumaPonderacionesExistentes = criteriosMateria.reduce((sum, c) => sum + c.ponderacion, 0);
+    const nuevaSuma = sumaPonderacionesExistentes + this.formData.ponderacion;
+
+    if (nuevaSuma > 100) {
+      alert(`La suma de ponderaciones excede el 100%. Actual: ${sumaPonderacionesExistentes}%, intentando agregar: ${this.formData.ponderacion}%`);
+      return;
+    }
+
     if (editing) {
-      updatedCriterios = this.criterios.map(c =>
-        c.id === editing.id ? { ...c, ...this.formData } : c
-      );
+      const updatedCriterio: CriterioEvaluacion = {
+        ...editing,
+        ...this.formData
+      };
+      this.dataService.updateCriterio(updatedCriterio);
+      alert('Criterio actualizado exitosamente');
     } else {
       const newCriterio: CriterioEvaluacion = {
-        id: `crit${Date.now()}`,
+        id: `crit${Date.now()}`, // Se reemplazará con el ID del backend
         nombre: this.formData.nombre,
         descripcion: this.formData.descripcion,
         ponderacion: this.formData.ponderacion,
         materiaId: this.formData.materiaId
       };
-      updatedCriterios = [...this.criterios, newCriterio];
+      this.dataService.addCriterio(newCriterio);
+      alert('Criterio agregado exitosamente');
     }
 
-    // Validar que la suma de ponderaciones no exceda 100%
-    const sumaPonderaciones = updatedCriterios
-      .filter(c => c.materiaId === this.formData.materiaId)
-      .reduce((sum, c) => sum + c.ponderacion, 0);
-
-    if (sumaPonderaciones > 100) {
-      alert('La suma de ponderaciones excede el 100%');
-      return;
-    }
-
-    this.dataService.updateCriterios(updatedCriterios);
-    alert(editing ? 'Criterio actualizado exitosamente' : 'Criterio agregado exitosamente');
     this.closeDialog();
   }
 

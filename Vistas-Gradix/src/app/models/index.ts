@@ -3,8 +3,8 @@
 export interface Docente {
   id: string;
   nombre: string;
-  email: string;
-  password: string;
+  correo: string;
+  password_hash: string;
 }
 
 export interface CampoFormativo {
@@ -16,10 +16,17 @@ export interface CampoFormativo {
 export interface Materia {
   id: string;
   nombre: string;
-  campoFormativoId: string;
+  campoId: string;  // Cambiado de campoFormativoId a campoId para coincidir con backend
   docenteId: string;
-  grado: number;
-  grupo: string;
+  // Campos opcionales para compatibilidad con código existente
+  grado?: number;
+  grupo?: string;
+}
+
+export interface MateriaRequest {
+  nombre: string;
+  campoId: number;
+  docenteId: number;
 }
 
 export interface Alumno {
@@ -38,6 +45,13 @@ export interface CriterioEvaluacion {
   descripcion?: string;
   ponderacion: number; // Porcentaje de 0 a 100
   materiaId: string;
+}
+
+export interface CriterioRequest {
+  nombre: string;
+  descripcion?: string;
+  ponderacion: number;
+  materiaId: number;
 }
 
 export interface Calificacion {

@@ -1,7 +1,8 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../services/data.service';
 import { CalculationsService } from '../../services/calculations.service';
+import { AlumnoService } from '../../services/alumno.service';
 import { IconComponent } from '../icon/icon.component';
 
 @Component({
@@ -11,10 +12,29 @@ import { IconComponent } from '../icon/icon.component';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
 
   private dataService = inject(DataService);
   private calculationsService = inject(CalculationsService);
+  private alumnoService = inject(AlumnoService);
+
+  apiStatus = 'Verificando API...';
+  apiData: any = null;
+
+  ngOnInit() {
+    // Prueba de conexión con la API
+    this.alumnoService.getAll().subscribe({
+      next: (data) => {
+        this.apiStatus = '✅ API conectada correctamente';
+        this.apiData = data;
+        console.log('✅ Datos de API:', data);
+      },
+      error: (err) => {
+        this.apiStatus = '❌ Error conectando a API: ' + err.message;
+        console.error('❌ Error de API:', err);
+      }
+    });
+  }
 
   stats = computed(() => {
     const alumnos = this.dataService.alumnos();

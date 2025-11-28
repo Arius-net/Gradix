@@ -2,6 +2,7 @@ import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../services/data.service';
+import { AuthService } from '../../services/auth.service';
 import { Materia, CampoFormativo } from '../../models';
 
 @Component({
@@ -17,18 +18,21 @@ export class MateriasManagerComponent implements OnInit {
   
   formData = {
     nombre: '',
-    campoFormativoId: '',
+    campoId: '',
     grado: 1,
     grupo: 'A'
   };
 
-  constructor(public dataService: DataService) {}
+  constructor(
+    public dataService: DataService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     // Inicializar el campo formativo por defecto
     const campos = this.dataService.campos();
-    if (campos.length > 0 && !this.formData.campoFormativoId) {
-      this.formData.campoFormativoId = campos[0].id;
+    if (campos.length > 0 && !this.formData.campoId) {
+      this.formData.campoId = campos[0].id;
     }
   }
 
@@ -43,7 +47,7 @@ export class MateriasManagerComponent implements OnInit {
   resetForm(): void {
     this.formData = {
       nombre: '',
-      campoFormativoId: this.camposFormativos[0]?.id || '',
+      campoId: this.camposFormativos[0]?.id || '',
       grado: 1,
       grupo: 'A'
     };
@@ -55,9 +59,9 @@ export class MateriasManagerComponent implements OnInit {
       this.editingMateria.set(materia);
       this.formData = {
         nombre: materia.nombre,
-        campoFormativoId: materia.campoFormativoId,
-        grado: materia.grado,
-        grupo: materia.grupo
+        campoId: materia.campoId,
+        grado: materia.grado || 1,
+        grupo: materia.grupo || 'A'
       };
     } else {
       this.resetForm();
@@ -73,18 +77,20 @@ export class MateriasManagerComponent implements OnInit {
   handleSubmit(event: Event): void {
     event.preventDefault();
 
-    if (!this.formData.nombre || !this.formData.campoFormativoId) {
+    if (!this.formData.nombre || !this.formData.campoId) {
       alert('Por favor completa todos los campos');
       return;
     }
 
-    const docenteId = 'doc1'; // ID del docente actual
+    // Obtener el ID del docente autenticado
+    const docenteId = this.authService.getDocenteId().toString();
 
     const editing = this.editingMateria();
     if (editing) {
       const updatedMateria: Materia = {
         ...editing,
-        ...this.formData
+        ...this.formData,
+        docenteId
       };
       this.dataService.updateMateria(updatedMateria);
       alert('Materia actualizada exitosamente');
@@ -123,6 +129,6 @@ export class MateriasManagerComponent implements OnInit {
   }
 
   getMateriasDelCampo(campoId: string): Materia[] {
-    return this.materias.filter(m => m.campoFormativoId === campoId);
+    return this.materias.filter(m => m.campoId === campoId);
   }
 }

@@ -17,18 +17,18 @@ export class MockDataService {
   readonly docenteDemo: Docente = {
     id: 'doc1',
     nombre: 'María García López',
-    email: 'maria.garcia@telesecundaria.edu.mx',
-    password: 'demo123',
+    correo: 'maria.garcia@telesecundaria.edu.mx',
+    password_hash: 'demo123',
   };
 
   // Materias de ejemplo
   readonly materiasDemo: Materia[] = [
-    { id: 'mat1', nombre: 'Español', campoFormativoId: 'cf1', docenteId: 'doc1', grado: 1, grupo: 'A' },
-    { id: 'mat2', nombre: 'Matemáticas', campoFormativoId: 'cf2', docenteId: 'doc1', grado: 1, grupo: 'A' },
-    { id: 'mat3', nombre: 'Ciencias (Biología)', campoFormativoId: 'cf2', docenteId: 'doc1', grado: 1, grupo: 'A' },
-    { id: 'mat4', nombre: 'Historia', campoFormativoId: 'cf3', docenteId: 'doc1', grado: 1, grupo: 'A' },
-    { id: 'mat5', nombre: 'Formación Cívica y Ética', campoFormativoId: 'cf3', docenteId: 'doc1', grado: 1, grupo: 'A' },
-    { id: 'mat6', nombre: 'Inglés', campoFormativoId: 'cf1', docenteId: 'doc1', grado: 1, grupo: 'A' },
+    { id: 'mat1', nombre: 'Español', campoId: 'cf1', docenteId: 'doc1', grado: 1, grupo: 'A' },
+    { id: 'mat2', nombre: 'Matemáticas', campoId: 'cf2', docenteId: 'doc1', grado: 1, grupo: 'A' },
+    { id: 'mat3', nombre: 'Ciencias (Biología)', campoId: 'cf2', docenteId: 'doc1', grado: 1, grupo: 'A' },
+    { id: 'mat4', nombre: 'Historia', campoId: 'cf3', docenteId: 'doc1', grado: 1, grupo: 'A' },
+    { id: 'mat5', nombre: 'Formación Cívica y Ética', campoId: 'cf3', docenteId: 'doc1', grado: 1, grupo: 'A' },
+    { id: 'mat6', nombre: 'Inglés', campoId: 'cf1', docenteId: 'doc1', grado: 1, grupo: 'A' },
   ];
 
   // Alumnos de ejemplo
