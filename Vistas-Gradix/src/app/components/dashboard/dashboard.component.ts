@@ -22,16 +22,13 @@ export class DashboardComponent implements OnInit {
   apiData: any = null;
 
   ngOnInit() {
-    // Prueba de conexión con la API
     this.alumnoService.getAll().subscribe({
       next: (data) => {
         this.apiStatus = '✅ API conectada correctamente';
         this.apiData = data;
-        console.log('✅ Datos de API:', data);
       },
       error: (err) => {
         this.apiStatus = '❌ Error conectando a API: ' + err.message;
-        console.error('❌ Error de API:', err);
       }
     });
   }

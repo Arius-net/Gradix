@@ -2,6 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../services/data.service';
+import { NotificationService } from '../../services/notification.service';
 import { Alumno } from '../../models';
 import { IconComponent } from '../icon/icon.component';
 
@@ -15,6 +16,7 @@ import { IconComponent } from '../icon/icon.component';
 export class AlumnosManagerComponent {
 
   private dataService = inject(DataService);
+  private notificationService = inject(NotificationService);
   
   alumnos = this.dataService.alumnos;
   isDialogOpen = signal(false);
@@ -72,7 +74,7 @@ export class AlumnosManagerComponent {
     const data = this.formData();
     
     if (!data.nombre || !data.apellidoPaterno || !data.apellidoMaterno) {
-      alert('Por favor completa todos los campos');
+      this.notificationService.warning('Por favor completa todos los campos');
       return;
     }
 
@@ -85,6 +87,7 @@ export class AlumnosManagerComponent {
         ...data
       };
       this.dataService.updateAlumno(updatedAlumno);
+      this.notificationService.success('Alumno actualizado exitosamente');
     } else {
       // Agregar
       const newAlumno: Alumno = {
@@ -93,6 +96,7 @@ export class AlumnosManagerComponent {
         docenteId: 'doc1',
       };
       this.dataService.addAlumno(newAlumno);
+      this.notificationService.success('Alumno agregado exitosamente');
     }
 
     this.closeDialog();
@@ -101,6 +105,7 @@ export class AlumnosManagerComponent {
   deleteAlumno(id: string): void {
     if (confirm('¿Estás seguro de eliminar este alumno?')) {
       this.dataService.deleteAlumno(id);
+      this.notificationService.success('Alumno eliminado exitosamente');
     }
   }
 

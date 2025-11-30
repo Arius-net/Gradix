@@ -34,11 +34,9 @@ export class DataService {
   loadAlumnos(): void {
     this.alumnoService.getAll().subscribe({
       next: (data) => {
-        console.log('✅ Alumnos cargados desde API:', data);
         this.alumnos.set(data);
       },
       error: (err) => {
-        console.error('❌ Error cargando alumnos desde API:', err);
         const stored = localStorage.getItem('gradix_alumnos');
         if (stored) {
           this.alumnos.set(JSON.parse(stored));
@@ -58,7 +56,7 @@ export class DataService {
         const current = this.alumnos();
         this.updateAlumnos([...current, newAlumno]);
       },
-      error: (err) => console.error('Error creando alumno:', err)
+      error: (err) => {}
     });
   }
 
@@ -68,7 +66,7 @@ export class DataService {
         const current = this.alumnos();
         this.updateAlumnos(current.filter(a => a.id !== id));
       },
-      error: (err) => console.error('Error eliminando alumno:', err)
+      error: (err) => {}
     });
   }
 
@@ -78,7 +76,7 @@ export class DataService {
         const current = this.alumnos();
         this.updateAlumnos(current.map(a => a.id === updatedAlumno.id ? updatedAlumno : a));
       },
-      error: (err) => console.error('Error actualizando alumno:', err)
+      error: (err) => {}
     });
   }
 
@@ -86,11 +84,9 @@ export class DataService {
   loadMaterias(): void {
     this.materiaService.getAll().subscribe({
       next: (data) => {
-        console.log('✅ Materias cargadas desde API:', data);
         this.materias.set(data);
       },
       error: (err) => {
-        console.error('❌ Error cargando materias desde API:', err);
         const stored = localStorage.getItem('gradix_materias');
         if (stored) {
           this.materias.set(JSON.parse(stored));
@@ -110,10 +106,6 @@ export class DataService {
     const docenteId = Number(materia.docenteId);
     
     if (isNaN(campoId) || isNaN(docenteId)) {
-      console.error('Error: campoId o docenteId no son números válidos', {
-        campoId: materia.campoId,
-        docenteId: materia.docenteId
-      });
       return;
     }
     
@@ -123,14 +115,12 @@ export class DataService {
       docenteId: docenteId
     };
     
-    console.log('Enviando materia request:', materiaRequest);
-    
     this.materiaService.create(materiaRequest).subscribe({
       next: (newMateria) => {
         const current = this.materias();
         this.updateMaterias([...current, newMateria]);
       },
-      error: (err) => console.error('Error creando materia:', err)
+      error: (err) => {}
     });
   }
 
@@ -140,7 +130,7 @@ export class DataService {
         const current = this.materias();
         this.updateMaterias(current.filter(m => m.id !== id));
       },
-      error: (err) => console.error('Error eliminando materia:', err)
+      error: (err) => {}
     });
   }
 
@@ -156,7 +146,7 @@ export class DataService {
         const current = this.materias();
         this.updateMaterias(current.map(m => m.id === updatedMateria.id ? updatedMateria : m));
       },
-      error: (err) => console.error('Error actualizando materia:', err)
+      error: (err) => {}
     });
   }
 
@@ -164,21 +154,9 @@ export class DataService {
   loadCriterios(): void {
     this.criterioService.getAll().subscribe({
       next: (data) => {
-        console.log('✅ Criterios cargados desde API:', data);
-        if (data.length > 0) {
-          console.log('🔍 Primer criterio (raw):', JSON.stringify(data[0], null, 2));
-          console.log('📋 Estructura del criterio:', {
-            id: data[0].id,
-            nombre: data[0].nombre,
-            descripcion: data[0].descripcion,
-            porcentaje: data[0].porcentaje,
-            materiaId: data[0].materiaId
-          });
-        }
         this.criterios.set(data);
       },
       error: (err) => {
-        console.error('❌ Error cargando criterios desde API:', err);
         const stored = localStorage.getItem('gradix_criterios');
         if (stored) {
           this.criterios.set(JSON.parse(stored));
@@ -205,7 +183,7 @@ export class DataService {
         const current = this.criterios();
         this.updateCriterios([...current, newCriterio]);
       },
-      error: (err) => console.error('Error creando criterio:', err)
+      error: (err) => {}
     });
   }
 
@@ -215,7 +193,7 @@ export class DataService {
         const current = this.criterios();
         this.updateCriterios(current.filter(c => c.id !== id));
       },
-      error: (err) => console.error('Error eliminando criterio:', err)
+      error: (err) => {}
     });
   }
 
@@ -232,7 +210,7 @@ export class DataService {
         const current = this.criterios();
         this.updateCriterios(current.map(c => c.id === updatedCriterio.id ? updatedCriterio : c));
       },
-      error: (err) => console.error('Error actualizando criterio:', err)
+      error: (err) => {}
     });
   }
 
@@ -240,11 +218,9 @@ export class DataService {
   loadCalificaciones(): void {
     this.calificacionService.getAll().subscribe({
       next: (data) => {
-        console.log('✅ Calificaciones cargadas desde API:', data);
         this.calificaciones.set(data);
       },
       error: (err) => {
-        console.error('❌ Error cargando calificaciones desde API:', err);
         const stored = localStorage.getItem('gradix_calificaciones');
         if (stored) {
           this.calificaciones.set(JSON.parse(stored));
@@ -265,19 +241,12 @@ export class DataService {
       valor: calificacion.valor
     };
     
-    console.log('➕ Enviando nueva calificación a API:', calificacionRequest);
-    
     this.calificacionService.create(calificacionRequest).subscribe({
       next: (newCalificacion) => {
-        console.log('✅ Calificación creada en API:', newCalificacion);
         const current = this.calificaciones();
         this.updateCalificaciones([...current, newCalificacion]);
       },
       error: (err) => {
-        console.error('❌ Error creando calificación:', err);
-        if (err.error) {
-          console.error('Detalles del error:', err.error);
-        }
       }
     });
   }
@@ -288,7 +257,7 @@ export class DataService {
         const current = this.calificaciones();
         this.updateCalificaciones(current.filter(c => c.id !== id));
       },
-      error: (err) => console.error('Error eliminando calificación:', err)
+      error: (err) => {}
     });
   }
 
@@ -299,22 +268,12 @@ export class DataService {
       valor: updatedCalificacion.valor
     };
     
-    console.log('🔄 Actualizando calificación en API:', {
-      id: updatedCalificacion.id,
-      request: calificacionRequest
-    });
-    
     this.calificacionService.update(Number(updatedCalificacion.id), calificacionRequest).subscribe({
       next: () => {
-        console.log('✅ Calificación actualizada en API');
         const current = this.calificaciones();
         this.updateCalificaciones(current.map(c => c.id === updatedCalificacion.id ? updatedCalificacion : c));
       },
       error: (err) => {
-        console.error('❌ Error actualizando calificación:', err);
-        if (err.error) {
-          console.error('Detalles del error:', err.error);
-        }
       }
     });
   }
@@ -326,11 +285,8 @@ export class DataService {
       valor: calificacion.valor
     };
     
-    console.log('🔄 Upsert calificación en API:', calificacionRequest);
-    
     this.calificacionService.upsert(calificacionRequest).subscribe({
       next: (savedCalificacion) => {
-        console.log('✅ Calificación guardada en API:', savedCalificacion);
         const current = this.calificaciones();
         // Buscar si ya existe en el estado local
         const existingIndex = current.findIndex(
@@ -349,10 +305,6 @@ export class DataService {
         }
       },
       error: (err) => {
-        console.error('❌ Error en upsert calificación:', err);
-        if (err.error) {
-          console.error('Detalles del error:', err.error);
-        }
       }
     });
   }
@@ -361,11 +313,9 @@ export class DataService {
   loadCampos(): void {
     this.campoFormativoService.getAll().subscribe({
       next: (data) => {
-        console.log('✅ Campos formativos cargados desde API:', data);
         this.campos.set(data);
       },
       error: (err) => {
-        console.error('❌ Error cargando campos formativos desde API:', err);
         const stored = localStorage.getItem('gradix_campos');
         if (stored) {
           this.campos.set(JSON.parse(stored));

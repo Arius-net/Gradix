@@ -36,7 +36,6 @@ export class AuthService {
           password: password
         }).subscribe({
           next: (response) => {
-            console.log('✅ Registro exitoso:', response);
             if (response.token) {
               localStorage.setItem('gradix_token', response.token);
             }
@@ -56,8 +55,6 @@ export class AuthService {
             resolve(true);
           },
           error: (err) => {
-            console.error('❌ Error en registro:', err);
-            console.error('Detalles del error:', err.error);
             resolve(false);
           }
         });
@@ -70,7 +67,6 @@ export class AuthService {
           password: password
         }).subscribe({
           next: (response) => {
-            console.log('✅ Login exitoso:', response);
             if (response.token) {
               localStorage.setItem('gradix_token', response.token);
             }
@@ -87,8 +83,6 @@ export class AuthService {
             resolve(true);
           },
           error: (err) => {
-            console.error('❌ Error en login:', err);
-            console.error('Detalles del error:', err.error);
             resolve(false);
           }
         });

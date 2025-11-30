@@ -2,15 +2,6 @@
   <div class="dashboard-header">
     <h1>Panel de Control</h1>
     <p>Bienvenido al sistema de gestión de calificaciones</p>
-    <!-- Estado de conexión API -->
-    <div style="margin-top: 1rem; padding: 0.75rem; border-radius: 8px; background: #f3f4f6;">
-      <strong>Estado API:</strong> {{ apiStatus }}
-      @if (apiData) {
-        <div style="margin-top: 0.5rem; font-size: 0.875rem;">
-          <em>Datos recibidos: {{ apiData | json }}</em>
-        </div>
-      }
-    </div>
   </div>
 
   <div class="stats-grid">

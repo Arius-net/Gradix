@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../services/data.service';
 import { CalculationsService } from '../../services/calculations.service';
+import { NotificationService } from '../../services/notification.service';
 import { Alumno, Materia } from '../../models';
 
 interface CalificacionMateria {
@@ -24,7 +25,8 @@ export class ReportesComponent implements OnInit {
 
   constructor(
     public dataService: DataService,
-    private calculationsService: CalculationsService
+    private calculationsService: CalculationsService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -121,6 +123,6 @@ export class ReportesComponent implements OnInit {
   }
 
   handleDescargar(): void {
-    alert('Función de descarga disponible próximamente');
+    this.notificationService.info('Función de descarga disponible próximamente');
   }
 }

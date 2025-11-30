@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../services/data.service';
 import { CalculationsService } from '../../services/calculations.service';
+import { NotificationService } from '../../services/notification.service';
 import { CriterioEvaluacion, Materia } from '../../models';
 
 @Component({
@@ -26,7 +27,8 @@ export class CriteriosEvaluacionComponent implements OnInit {
 
   constructor(
     public dataService: DataService,
-    private calculationsService: CalculationsService
+    private calculationsService: CalculationsService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -107,7 +109,7 @@ export class CriteriosEvaluacionComponent implements OnInit {
     event.preventDefault();
 
     if (!this.formData.nombre || this.formData.porcentaje <= 0 || this.formData.porcentaje > 100) {
-      alert('Por favor completa todos los campos correctamente');
+      this.notificationService.warning('Por favor completa todos los campos correctamente');
       return;
     }
 
@@ -121,7 +123,7 @@ export class CriteriosEvaluacionComponent implements OnInit {
     const nuevaSuma = sumaPonderacionesExistentes + this.formData.porcentaje;
 
     if (nuevaSuma > 100) {
-      alert(`La suma de ponderaciones excede el 100%. Actual: ${sumaPonderacionesExistentes}%, intentando agregar: ${this.formData.porcentaje}%`);
+      this.notificationService.error(`La suma de ponderaciones excede el 100%. Actual: ${sumaPonderacionesExistentes}%, intentando agregar: ${this.formData.porcentaje}%`);
       return;
     }
 
@@ -131,7 +133,7 @@ export class CriteriosEvaluacionComponent implements OnInit {
         ...this.formData
       };
       this.dataService.updateCriterio(updatedCriterio);
-      alert('Criterio actualizado exitosamente');
+      this.notificationService.success('Criterio actualizado exitosamente');
     } else {
       const newCriterio: CriterioEvaluacion = {
         id: `crit${Date.now()}`, // Se reemplazará con el ID del backend
@@ -141,7 +143,7 @@ export class CriteriosEvaluacionComponent implements OnInit {
         materiaId: this.formData.materiaId
       };
       this.dataService.addCriterio(newCriterio);
-      alert('Criterio agregado exitosamente');
+      this.notificationService.success('Criterio agregado exitosamente');
     }
 
     this.closeDialog();
@@ -150,7 +152,7 @@ export class CriteriosEvaluacionComponent implements OnInit {
   deleteCriterio(id: string): void {
     if (confirm('¿Estás seguro de eliminar este criterio?')) {
       this.dataService.deleteCriterio(id);
-      alert('Criterio eliminado exitosamente');
+      this.notificationService.success('Criterio eliminado exitosamente');
     }
   }
 }

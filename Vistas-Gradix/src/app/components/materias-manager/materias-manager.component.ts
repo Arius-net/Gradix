@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../services/data.service';
 import { AuthService } from '../../services/auth.service';
+import { NotificationService } from '../../services/notification.service';
 import { Materia, CampoFormativo } from '../../models';
 
 @Component({
@@ -25,7 +26,8 @@ export class MateriasManagerComponent implements OnInit {
 
   constructor(
     public dataService: DataService,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -78,7 +80,7 @@ export class MateriasManagerComponent implements OnInit {
     event.preventDefault();
 
     if (!this.formData.nombre || !this.formData.campoId) {
-      alert('Por favor completa todos los campos');
+      this.notificationService.warning('Por favor completa todos los campos');
       return;
     }
 
@@ -93,7 +95,7 @@ export class MateriasManagerComponent implements OnInit {
         docenteId
       };
       this.dataService.updateMateria(updatedMateria);
-      alert('Materia actualizada exitosamente');
+      this.notificationService.success('Materia actualizada exitosamente');
     } else {
       const newMateria: Materia = {
         id: `mat${Date.now()}`,
@@ -101,7 +103,7 @@ export class MateriasManagerComponent implements OnInit {
         docenteId
       };
       this.dataService.addMateria(newMateria);
-      alert('Materia agregada exitosamente');
+      this.notificationService.success('Materia agregada exitosamente');
     }
 
     this.closeDialog();
@@ -110,7 +112,7 @@ export class MateriasManagerComponent implements OnInit {
   deleteMateria(id: string): void {
     if (confirm('¿Estás seguro de eliminar esta materia?')) {
       this.dataService.deleteMateria(id);
-      alert('Materia eliminada exitosamente');
+      this.notificationService.success('Materia eliminada exitosamente');
     }
   }
 
