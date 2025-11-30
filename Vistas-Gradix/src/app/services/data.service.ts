@@ -51,7 +51,16 @@ export class DataService {
   }
 
   addAlumno(alumno: Alumno): void {
-    this.alumnoService.create(alumno).subscribe({
+    const alumnoRequest = {
+      nombre: alumno.nombre,
+      apellidoPaterno: alumno.apellidoPaterno,
+      apellidoMaterno: alumno.apellidoMaterno,
+      grado: alumno.grado,
+      grupo: alumno.grupo,
+      docenteId: Number(alumno.docenteId)
+    };
+    
+    this.alumnoService.create(alumnoRequest).subscribe({
       next: (newAlumno) => {
         const current = this.alumnos();
         this.updateAlumnos([...current, newAlumno]);
@@ -71,7 +80,16 @@ export class DataService {
   }
 
   updateAlumno(updatedAlumno: Alumno): void {
-    this.alumnoService.update(Number(updatedAlumno.id), updatedAlumno).subscribe({
+    const alumnoRequest = {
+      nombre: updatedAlumno.nombre,
+      apellidoPaterno: updatedAlumno.apellidoPaterno,
+      apellidoMaterno: updatedAlumno.apellidoMaterno,
+      grado: updatedAlumno.grado,
+      grupo: updatedAlumno.grupo,
+      docenteId: Number(updatedAlumno.docenteId)
+    };
+    
+    this.alumnoService.update(Number(updatedAlumno.id), alumnoRequest).subscribe({
       next: () => {
         const current = this.alumnos();
         this.updateAlumnos(current.map(a => a.id === updatedAlumno.id ? updatedAlumno : a));
@@ -112,7 +130,9 @@ export class DataService {
     const materiaRequest = {
       nombre: materia.nombre,
       campoId: campoId,
-      docenteId: docenteId
+      docenteId: docenteId,
+      grado: materia.grado,
+      grupo: materia.grupo
     };
     
     this.materiaService.create(materiaRequest).subscribe({
@@ -138,7 +158,9 @@ export class DataService {
     const materiaRequest = {
       nombre: updatedMateria.nombre,
       campoId: Number(updatedMateria.campoId),
-      docenteId: Number(updatedMateria.docenteId)
+      docenteId: Number(updatedMateria.docenteId),
+      grado: updatedMateria.grado,
+      grupo: updatedMateria.grupo
     };
     
     this.materiaService.update(Number(updatedMateria.id), materiaRequest).subscribe({

@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { IconComponent } from '../icon/icon.component';
 import { NotificationComponent } from '../notification/notification.component';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 
 interface MenuItem {
   route: string;
@@ -14,7 +15,7 @@ interface MenuItem {
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [CommonModule, RouterModule, IconComponent, NotificationComponent],
+  imports: [CommonModule, RouterModule, IconComponent, NotificationComponent, ConfirmDialogComponent],
   templateUrl: './main-layout.component.html',
   styleUrls: ['./main-layout.component.css']
 })

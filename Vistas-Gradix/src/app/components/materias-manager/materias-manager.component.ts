@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { DataService } from '../../services/data.service';
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../services/notification.service';
+import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 import { Materia, CampoFormativo } from '../../models';
 
 @Component({
@@ -27,7 +28,8 @@ export class MateriasManagerComponent implements OnInit {
   constructor(
     public dataService: DataService,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private confirmDialogService: ConfirmDialogService
   ) {}
 
   ngOnInit(): void {
@@ -109,8 +111,16 @@ export class MateriasManagerComponent implements OnInit {
     this.closeDialog();
   }
 
-  deleteMateria(id: string): void {
-    if (confirm('¿Estás seguro de eliminar esta materia?')) {
+  async deleteMateria(id: string): Promise<void> {
+    const confirmed = await this.confirmDialogService.confirm({
+      title: 'Eliminar Materia',
+      message: '¿Estás seguro de eliminar esta materia? Esta acción no se puede deshacer.',
+      confirmText: 'Eliminar',
+      cancelText: 'Cancelar',
+      type: 'danger'
+    });
+    
+    if (confirmed) {
       this.dataService.deleteMateria(id);
       this.notificationService.success('Materia eliminada exitosamente');
     }

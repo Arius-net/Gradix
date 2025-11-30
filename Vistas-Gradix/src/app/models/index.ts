@@ -19,17 +19,18 @@ export interface CampoFormativoRequest {
 export interface Materia {
   id: string;
   nombre: string;
-  campoId: string;  // Cambiado de campoFormativoId a campoId para coincidir con backend
+  campoId: string;
   docenteId: string;
-  // Campos opcionales para compatibilidad con código existente
-  grado?: number;
-  grupo?: string;
+  grado: number;
+  grupo: string;
 }
 
 export interface MateriaRequest {
   nombre: string;
   campoId: number;
   docenteId: number;
+  grado: number;
+  grupo: string;
 }
 
 export interface Alumno {
@@ -40,6 +41,15 @@ export interface Alumno {
   grado: number;
   grupo: string;
   docenteId: string;
+}
+
+export interface AlumnoRequest {
+  nombre: string;
+  apellidoPaterno: string;
+  apellidoMaterno: string;
+  grado: number;
+  grupo: string;
+  docenteId: number;
 }
 
 export interface CriterioEvaluacion {

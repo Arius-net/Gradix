@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../services/data.service';
 import { NotificationService } from '../../services/notification.service';
+import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 import { Alumno } from '../../models';
 import { IconComponent } from '../icon/icon.component';
 
@@ -17,6 +18,7 @@ export class AlumnosManagerComponent {
 
   private dataService = inject(DataService);
   private notificationService = inject(NotificationService);
+  private confirmDialogService = inject(ConfirmDialogService);
   
   alumnos = this.dataService.alumnos;
   isDialogOpen = signal(false);
@@ -102,8 +104,16 @@ export class AlumnosManagerComponent {
     this.closeDialog();
   }
 
-  deleteAlumno(id: string): void {
-    if (confirm('¿Estás seguro de eliminar este alumno?')) {
+  async deleteAlumno(id: string): Promise<void> {
+    const confirmed = await this.confirmDialogService.confirm({
+      title: 'Eliminar Alumno',
+      message: '¿Estás seguro de eliminar este alumno? Esta acción no se puede deshacer y eliminará todas sus calificaciones.',
+      confirmText: 'Eliminar',
+      cancelText: 'Cancelar',
+      type: 'danger'
+    });
+    
+    if (confirmed) {
       this.dataService.deleteAlumno(id);
       this.notificationService.success('Alumno eliminado exitosamente');
     }

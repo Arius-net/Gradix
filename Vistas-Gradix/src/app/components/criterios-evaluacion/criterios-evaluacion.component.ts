@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { DataService } from '../../services/data.service';
 import { CalculationsService } from '../../services/calculations.service';
 import { NotificationService } from '../../services/notification.service';
+import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 import { CriterioEvaluacion, Materia } from '../../models';
 
 @Component({
@@ -28,7 +29,8 @@ export class CriteriosEvaluacionComponent implements OnInit {
   constructor(
     public dataService: DataService,
     private calculationsService: CalculationsService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private confirmDialogService: ConfirmDialogService
   ) {}
 
   ngOnInit(): void {
@@ -149,8 +151,16 @@ export class CriteriosEvaluacionComponent implements OnInit {
     this.closeDialog();
   }
 
-  deleteCriterio(id: string): void {
-    if (confirm('¿Estás seguro de eliminar este criterio?')) {
+  async deleteCriterio(id: string): Promise<void> {
+    const confirmed = await this.confirmDialogService.confirm({
+      title: 'Eliminar Criterio',
+      message: '¿Estás seguro de eliminar este criterio de evaluación? Esta acción no se puede deshacer.',
+      confirmText: 'Eliminar',
+      cancelText: 'Cancelar',
+      type: 'danger'
+    });
+    
+    if (confirmed) {
       this.dataService.deleteCriterio(id);
       this.notificationService.success('Criterio eliminado exitosamente');
     }
