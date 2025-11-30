@@ -36,6 +36,35 @@ class CalificacionController {
         }
     }
 
+    // Nuevo método para buscar por alumnoId y criterioId
+    suspend fun getByAlumnoAndCriterio(call: ApplicationCall) {
+        try {
+            val alumnoId = call.parameters["alumnoId"]?.toIntOrNull()
+            val criterioId = call.parameters["criterioId"]?.toIntOrNull()
+
+            if (alumnoId == null || criterioId == null) {
+                call.respond(HttpStatusCode.BadRequest, mapOf("error" to "alumnoId y criterioId son requeridos"))
+                return
+            }
+
+            val calificacion = dbQuery {
+                Calificaciones.select {
+                    (Calificaciones.alumnoId eq alumnoId) and (Calificaciones.criterioId eq criterioId)
+                }
+                    .map(::mapToCalificacion)
+                    .singleOrNull()
+            }
+
+            if (calificacion != null) {
+                call.respond(HttpStatusCode.OK, calificacion)
+            } else {
+                call.respond(HttpStatusCode.NotFound, mapOf("error" to "Calificación no encontrada"))
+            }
+        } catch (e: Exception) {
+            call.respond(HttpStatusCode.InternalServerError, mapOf("error" to (e.message ?: "Error al obtener calificación")))
+        }
+    }
+
     suspend fun getById(call: ApplicationCall) {
         try {
             val id = call.parameters["id"]?.toIntOrNull()
@@ -72,14 +101,18 @@ class CalificacionController {
                 }[Calificaciones.id]
             }
 
-            val calificacion = Calificacion(
-                id = id,
-                alumnoId = request.alumnoId,
-                criterioId = request.criterioId,
-                valor = request.valor,
-                fechaRegistro = null
-            )
-            call.respond(HttpStatusCode.Created, calificacion)
+            // Recuperar la calificación desde la BD para obtener el valor redondeado
+            val calificacion = dbQuery {
+                Calificaciones.select { Calificaciones.id eq id }
+                    .map(::mapToCalificacion)
+                    .singleOrNull()
+            }
+
+            if (calificacion != null) {
+                call.respond(HttpStatusCode.Created, calificacion)
+            } else {
+                call.respond(HttpStatusCode.InternalServerError, mapOf("error" to "Error al crear la calificación"))
+            }
         } catch (e: Exception) {
             call.respond(HttpStatusCode.BadRequest, mapOf("error" to (e.message ?: "Error en la solicitud")))
         }
@@ -141,6 +174,47 @@ class CalificacionController {
             }
         } catch (e: Exception) {
             call.respond(HttpStatusCode.InternalServerError, mapOf("error" to (e.message ?: "Error al eliminar calificación")))
+        }
+    }
+
+    // Método upsert: crea o actualiza según exista
+    suspend fun upsert(call: ApplicationCall) {
+        try {
+            val request = call.receive<CalificacionRequest>()
+
+            val calificacion = dbQuery {
+                // Buscar si ya existe una calificación para este alumno y criterio
+                val existing = Calificaciones.select {
+                    (Calificaciones.alumnoId eq request.alumnoId) and (Calificaciones.criterioId eq request.criterioId)
+                }.singleOrNull()
+
+                if (existing != null) {
+                    // Actualizar existente
+                    val id = existing[Calificaciones.id]
+                    Calificaciones.update({ Calificaciones.id eq id }) {
+                        it[valor] = BigDecimal(request.valor)
+                    }
+                    // Recuperar el registro actualizado
+                    Calificaciones.select { Calificaciones.id eq id }
+                        .map(::mapToCalificacion)
+                        .single()
+                } else {
+                    // Crear nuevo
+                    val newId = Calificaciones.insert {
+                        it[alumnoId] = request.alumnoId
+                        it[criterioId] = request.criterioId
+                        it[valor] = BigDecimal(request.valor)
+                    }[Calificaciones.id]
+                    // Recuperar el registro creado
+                    Calificaciones.select { Calificaciones.id eq newId }
+                        .map(::mapToCalificacion)
+                        .single()
+                }
+            }
+
+            call.respond(HttpStatusCode.OK, calificacion)
+        } catch (e: Exception) {
+            call.respond(HttpStatusCode.BadRequest, mapOf("error" to (e.message ?: "Error en la solicitud")))
         }
     }
 

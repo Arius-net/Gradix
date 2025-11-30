@@ -62,6 +62,7 @@ class CriterioController {
             val id = dbQuery {
                 Criterios.insert {
                     it[nombre] = request.nombre
+                    it[descripcion] = request.descripcion
                     it[porcentaje] = BigDecimal(request.porcentaje)
                     it[materiaId] = request.materiaId
                 }[Criterios.id]
@@ -70,6 +71,7 @@ class CriterioController {
             val criterio = Criterio(
                 id = id,
                 nombre = request.nombre,
+                descripcion = request.descripcion,
                 porcentaje = request.porcentaje,
                 materiaId = request.materiaId
             )
@@ -92,6 +94,7 @@ class CriterioController {
             val updated = dbQuery {
                 Criterios.update({ Criterios.id eq id }) {
                     it[nombre] = request.nombre
+                    it[descripcion] = request.descripcion
                     it[porcentaje] = BigDecimal(request.porcentaje)
                     it[materiaId] = request.materiaId
                 } > 0
@@ -141,6 +144,7 @@ class CriterioController {
     private fun mapToCriterio(row: ResultRow): Criterio = Criterio(
         id = row[Criterios.id],
         nombre = row[Criterios.nombre],
+        descripcion = row[Criterios.descripcion],
         porcentaje = row[Criterios.porcentaje].toDouble(),
         materiaId = row[Criterios.materiaId]
     )

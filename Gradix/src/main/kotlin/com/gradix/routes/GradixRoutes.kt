@@ -92,8 +92,16 @@ fun Route.calificacionRoutes(calificacionController: CalificacionController) {
             calificacionController.getById(call)
         }
 
+        get("/alumno/{alumnoId}/criterio/{criterioId}") {
+            calificacionController.getByAlumnoAndCriterio(call)
+        }
+
         post {
             calificacionController.create(call)
+        }
+
+        post("/upsert") {
+            calificacionController.upsert(call)
         }
 
         put("/{id}") {
