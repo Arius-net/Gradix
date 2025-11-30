@@ -20,7 +20,7 @@ export class CriteriosEvaluacionComponent implements OnInit {
   formData = {
     nombre: '',
     descripcion: '',
-    ponderacion: 0,
+    porcentaje: 0,
     materiaId: ''
   };
 
@@ -54,7 +54,7 @@ export class CriteriosEvaluacionComponent implements OnInit {
   });
 
   sumaPonderaciones = computed(() => {
-    return this.criteriosMateria().reduce((sum, c) => sum + c.ponderacion, 0);
+    return this.criteriosMateria().reduce((sum, c) => sum + c.porcentaje, 0);
   });
 
   esPonderacionCompleta = computed(() => {
@@ -77,7 +77,7 @@ export class CriteriosEvaluacionComponent implements OnInit {
     this.formData = {
       nombre: '',
       descripcion: '',
-      ponderacion: 0,
+      porcentaje: 0,
       materiaId: this.selectedMateria()
     };
     this.editingCriterio.set(null);
@@ -89,7 +89,7 @@ export class CriteriosEvaluacionComponent implements OnInit {
       this.formData = {
         nombre: criterio.nombre,
         descripcion: criterio.descripcion || '',
-        ponderacion: criterio.ponderacion,
+        porcentaje: criterio.porcentaje,
         materiaId: criterio.materiaId
       };
     } else {
@@ -106,7 +106,7 @@ export class CriteriosEvaluacionComponent implements OnInit {
   handleSubmit(event: Event): void {
     event.preventDefault();
 
-    if (!this.formData.nombre || this.formData.ponderacion <= 0 || this.formData.ponderacion > 100) {
+    if (!this.formData.nombre || this.formData.porcentaje <= 0 || this.formData.porcentaje > 100) {
       alert('Por favor completa todos los campos correctamente');
       return;
     }
@@ -117,11 +117,11 @@ export class CriteriosEvaluacionComponent implements OnInit {
     const criteriosMateria = this.criterios.filter(c => 
       c.materiaId === this.formData.materiaId && (!editing || c.id !== editing.id)
     );
-    const sumaPonderacionesExistentes = criteriosMateria.reduce((sum, c) => sum + c.ponderacion, 0);
-    const nuevaSuma = sumaPonderacionesExistentes + this.formData.ponderacion;
+    const sumaPonderacionesExistentes = criteriosMateria.reduce((sum, c) => sum + c.porcentaje, 0);
+    const nuevaSuma = sumaPonderacionesExistentes + this.formData.porcentaje;
 
     if (nuevaSuma > 100) {
-      alert(`La suma de ponderaciones excede el 100%. Actual: ${sumaPonderacionesExistentes}%, intentando agregar: ${this.formData.ponderacion}%`);
+      alert(`La suma de ponderaciones excede el 100%. Actual: ${sumaPonderacionesExistentes}%, intentando agregar: ${this.formData.porcentaje}%`);
       return;
     }
 
@@ -137,7 +137,7 @@ export class CriteriosEvaluacionComponent implements OnInit {
         id: `crit${Date.now()}`, // Se reemplazará con el ID del backend
         nombre: this.formData.nombre,
         descripcion: this.formData.descripcion,
-        ponderacion: this.formData.ponderacion,
+        porcentaje: this.formData.porcentaje,
         materiaId: this.formData.materiaId
       };
       this.dataService.addCriterio(newCriterio);

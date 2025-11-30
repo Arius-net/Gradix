@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { CampoFormativoRequest } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +19,11 @@ export class CampoFormativoService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
 
-  create(campoFormativo: any): Observable<any> {
+  create(campoFormativo: CampoFormativoRequest): Observable<any> {
     return this.http.post<any>(this.apiUrl, campoFormativo);
   }
 
-  update(id: number, campoFormativo: any): Observable<any> {
+  update(id: number, campoFormativo: CampoFormativoRequest): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/${id}`, campoFormativo);
   }
 

@@ -7,10 +7,10 @@ import { Docente, CampoFormativo, Materia, Alumno, CriterioEvaluacion, Calificac
 export class MockDataService {
   // Campos formativos según el plan de estudios de telesecundaria
   readonly camposFormativos: CampoFormativo[] = [
-    { id: 'cf1', nombre: 'Lenguajes', descripcion: 'Español, Inglés' },
-    { id: 'cf2', nombre: 'Saberes y Pensamiento Científico', descripcion: 'Matemáticas, Ciencias' },
-    { id: 'cf3', nombre: 'Ética, Naturaleza y Sociedades', descripcion: 'Historia, Geografía, Formación Cívica' },
-    { id: 'cf4', nombre: 'De lo Humano y lo Comunitario', descripcion: 'Artes, Educación Física' },
+    { id: 'cf1', nombre: 'Lenguajes' },
+    { id: 'cf2', nombre: 'Saberes y Pensamiento Científico' },
+    { id: 'cf3', nombre: 'Ética, Naturaleza y Sociedades' },
+    { id: 'cf4', nombre: 'De lo Humano y lo Comunitario' },
   ];
 
   // Docente de ejemplo
@@ -45,39 +45,39 @@ export class MockDataService {
 
   // Criterios de evaluación de ejemplo
   readonly criteriosDemo: CriterioEvaluacion[] = [
-    { id: 'crit1', nombre: 'Exámenes', descripcion: 'Evaluaciones escritas', ponderacion: 40, materiaId: 'mat2' },
-    { id: 'crit2', nombre: 'Tareas', descripcion: 'Trabajos en casa', ponderacion: 20, materiaId: 'mat2' },
-    { id: 'crit3', nombre: 'Participación', descripcion: 'Participación en clase', ponderacion: 15, materiaId: 'mat2' },
-    { id: 'crit4', nombre: 'Proyecto Final', descripcion: 'Proyecto integrador', ponderacion: 25, materiaId: 'mat2' },
+    { id: 'crit1', nombre: 'Exámenes', porcentaje: 40, materiaId: 'mat2' },
+    { id: 'crit2', nombre: 'Tareas', porcentaje: 20, materiaId: 'mat2' },
+    { id: 'crit3', nombre: 'Participación', porcentaje: 15, materiaId: 'mat2' },
+    { id: 'crit4', nombre: 'Proyecto Final', porcentaje: 25, materiaId: 'mat2' },
     // Para Español
-    { id: 'crit5', nombre: 'Lectura y Comprensión', descripcion: 'Evaluación de lectura', ponderacion: 30, materiaId: 'mat1' },
-    { id: 'crit6', nombre: 'Producción de Textos', descripcion: 'Escritura y redacción', ponderacion: 30, materiaId: 'mat1' },
-    { id: 'crit7', nombre: 'Ortografía y Gramática', descripcion: 'Evaluación de ortografía', ponderacion: 20, materiaId: 'mat1' },
-    { id: 'crit8', nombre: 'Participación y Exposiciones', descripcion: 'Expresión oral', ponderacion: 20, materiaId: 'mat1' },
+    { id: 'crit5', nombre: 'Lectura y Comprensión', porcentaje: 30, materiaId: 'mat1' },
+    { id: 'crit6', nombre: 'Producción de Textos', porcentaje: 30, materiaId: 'mat1' },
+    { id: 'crit7', nombre: 'Ortografía y Gramática', porcentaje: 20, materiaId: 'mat1' },
+    { id: 'crit8', nombre: 'Participación y Exposiciones', porcentaje: 20, materiaId: 'mat1' },
   ];
 
   // Calificaciones de ejemplo
   readonly calificacionesDemo: Calificacion[] = [
     // Matemáticas - Alumno 1
-    { id: 'cal1', alumnoId: 'alu1', criterioId: 'crit1', materiaId: 'mat2', calificacion: 8.5, periodo: '1', fecha: '2025-10-15' },
-    { id: 'cal2', alumnoId: 'alu1', criterioId: 'crit2', materiaId: 'mat2', calificacion: 9.0, periodo: '1', fecha: '2025-10-20' },
-    { id: 'cal3', alumnoId: 'alu1', criterioId: 'crit3', materiaId: 'mat2', calificacion: 8.0, periodo: '1', fecha: '2025-10-25' },
-    { id: 'cal4', alumnoId: 'alu1', criterioId: 'crit4', materiaId: 'mat2', calificacion: 9.5, periodo: '1', fecha: '2025-10-30' },
+    { id: 'cal1', alumnoId: 'alu1', criterioId: 'crit1', valor: 8.5, fechaRegistro: '2025-10-15' },
+    { id: 'cal2', alumnoId: 'alu1', criterioId: 'crit2', valor: 9.0, fechaRegistro: '2025-10-20' },
+    { id: 'cal3', alumnoId: 'alu1', criterioId: 'crit3', valor: 8.0, fechaRegistro: '2025-10-25' },
+    { id: 'cal4', alumnoId: 'alu1', criterioId: 'crit4', valor: 9.5, fechaRegistro: '2025-10-30' },
     // Matemáticas - Alumno 2
-    { id: 'cal5', alumnoId: 'alu2', criterioId: 'crit1', materiaId: 'mat2', calificacion: 7.5, periodo: '1', fecha: '2025-10-15' },
-    { id: 'cal6', alumnoId: 'alu2', criterioId: 'crit2', materiaId: 'mat2', calificacion: 8.5, periodo: '1', fecha: '2025-10-20' },
-    { id: 'cal7', alumnoId: 'alu2', criterioId: 'crit3', materiaId: 'mat2', calificacion: 9.0, periodo: '1', fecha: '2025-10-25' },
-    { id: 'cal8', alumnoId: 'alu2', criterioId: 'crit4', materiaId: 'mat2', calificacion: 8.0, periodo: '1', fecha: '2025-10-30' },
+    { id: 'cal5', alumnoId: 'alu2', criterioId: 'crit1', valor: 7.5, fechaRegistro: '2025-10-15' },
+    { id: 'cal6', alumnoId: 'alu2', criterioId: 'crit2', valor: 8.5, fechaRegistro: '2025-10-20' },
+    { id: 'cal7', alumnoId: 'alu2', criterioId: 'crit3', valor: 9.0, fechaRegistro: '2025-10-25' },
+    { id: 'cal8', alumnoId: 'alu2', criterioId: 'crit4', valor: 8.0, fechaRegistro: '2025-10-30' },
     // Español - Alumno 1
-    { id: 'cal9', alumnoId: 'alu1', criterioId: 'crit5', materiaId: 'mat1', calificacion: 9.0, periodo: '1', fecha: '2025-10-15' },
-    { id: 'cal10', alumnoId: 'alu1', criterioId: 'crit6', materiaId: 'mat1', calificacion: 8.5, periodo: '1', fecha: '2025-10-20' },
-    { id: 'cal11', alumnoId: 'alu1', criterioId: 'crit7', materiaId: 'mat1', calificacion: 9.5, periodo: '1', fecha: '2025-10-25' },
-    { id: 'cal12', alumnoId: 'alu1', criterioId: 'crit8', materiaId: 'mat1', calificacion: 8.0, periodo: '1', fecha: '2025-10-30' },
+    { id: 'cal9', alumnoId: 'alu1', criterioId: 'crit5', valor: 9.0, fechaRegistro: '2025-10-15' },
+    { id: 'cal10', alumnoId: 'alu1', criterioId: 'crit6', valor: 8.5, fechaRegistro: '2025-10-20' },
+    { id: 'cal11', alumnoId: 'alu1', criterioId: 'crit7', valor: 9.5, fechaRegistro: '2025-10-25' },
+    { id: 'cal12', alumnoId: 'alu1', criterioId: 'crit8', valor: 8.0, fechaRegistro: '2025-10-30' },
     // Español - Alumno 2
-    { id: 'cal13', alumnoId: 'alu2', criterioId: 'crit5', materiaId: 'mat1', calificacion: 8.0, periodo: '1', fecha: '2025-10-15' },
-    { id: 'cal14', alumnoId: 'alu2', criterioId: 'crit6', materiaId: 'mat1', calificacion: 7.5, periodo: '1', fecha: '2025-10-20' },
-    { id: 'cal15', alumnoId: 'alu2', criterioId: 'crit7', materiaId: 'mat1', calificacion: 8.5, periodo: '1', fecha: '2025-10-25' },
-    { id: 'cal16', alumnoId: 'alu2', criterioId: 'crit8', materiaId: 'mat1', calificacion: 9.0, periodo: '1', fecha: '2025-10-30' },
+    { id: 'cal13', alumnoId: 'alu2', criterioId: 'crit5', valor: 8.0, fechaRegistro: '2025-10-15' },
+    { id: 'cal14', alumnoId: 'alu2', criterioId: 'crit6', valor: 7.5, fechaRegistro: '2025-10-20' },
+    { id: 'cal15', alumnoId: 'alu2', criterioId: 'crit7', valor: 8.5, fechaRegistro: '2025-10-25' },
+    { id: 'cal16', alumnoId: 'alu2', criterioId: 'crit8', valor: 9.0, fechaRegistro: '2025-10-30' },
   ];
 
   initializeMockData(): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { DataService } from '../../services/data.service';
@@ -21,13 +21,18 @@ export class CapturarCalificacionesComponent implements OnInit {
   constructor(
     public dataService: DataService,
     private calculationsService: CalculationsService
-  ) {}
+  ) {
+    // Effect para seleccionar la primera materia cuando se carguen
+    effect(() => {
+      const materias = this.dataService.materias();
+      if (materias.length > 0 && !this.selectedMateria()) {
+        this.selectedMateria.set(materias[0].id);
+      }
+    });
+  }
 
   ngOnInit(): void {
-    const materias = this.dataService.materias();
-    if (materias.length > 0 && !this.selectedMateria()) {
-      this.selectedMateria.set(materias[0].id);
-    }
+    // El effect se encargará de seleccionar la materia cuando se carguen los datos
   }
 
   get alumnos(): Alumno[] {
@@ -51,7 +56,9 @@ export class CapturarCalificacionesComponent implements OnInit {
   });
 
   criteriosMateria = computed(() => {
-    return this.criterios.filter(c => c.materiaId === this.selectedMateria());
+    const materiaId = this.selectedMateria();
+    if (!materiaId) return [];
+    return this.criterios.filter(c => String(c.materiaId) === String(materiaId));
   });
 
   esPonderacionCompleta = computed(() => {
@@ -72,9 +79,9 @@ export class CapturarCalificacionesComponent implements OnInit {
       return this.calificacionesTemp[key];
     }
     const cal = this.calificaciones.find(
-      c => c.alumnoId === alumnoId && c.criterioId === criterioId && c.periodo === this.selectedPeriodo()
+      c => c.alumnoId === alumnoId && c.criterioId === criterioId
     );
-    return cal?.calificacion;
+    return cal?.valor;
   }
 
   handleCalificacionChange(alumnoId: string, criterioId: string, valor: string): void {
@@ -102,68 +109,61 @@ export class CapturarCalificacionesComponent implements OnInit {
       return;
     }
 
-    const nuevasCalificaciones = [...this.calificaciones];
-
+    console.log('🔄 Guardando calificaciones...', this.calificacionesTemp);
+    let operacionesPendientes = 0;
+    
     Object.entries(this.calificacionesTemp).forEach(([key, valor]) => {
       const [alumnoId, criterioId] = key.split('-');
-
-      const existingIndex = nuevasCalificaciones.findIndex(
-        c => c.alumnoId === alumnoId && c.criterioId === criterioId && c.periodo === this.selectedPeriodo()
-      );
+      operacionesPendientes++;
 
       const calificacion: Calificacion = {
-        id: existingIndex >= 0 ? nuevasCalificaciones[existingIndex].id : `cal${Date.now()}-${key}`,
+        id: '', // El backend lo asignará o usará el existente
         alumnoId,
         criterioId,
-        materiaId: this.selectedMateria(),
-        calificacion: valor,
-        periodo: this.selectedPeriodo(),
-        fecha: new Date().toISOString().split('T')[0],
+        valor: valor,
+        fechaRegistro: new Date().toISOString().split('T')[0],
       };
 
-      if (existingIndex >= 0) {
-        nuevasCalificaciones[existingIndex] = calificacion;
-      } else {
-        nuevasCalificaciones.push(calificacion);
-      }
+      console.log(`📝 Guardando calificación (upsert):`, {
+        alumnoId: calificacion.alumnoId,
+        criterioId: calificacion.criterioId,
+        valor: calificacion.valor
+      });
+
+      // Usar upsert que maneja create o update automáticamente
+      this.dataService.upsertCalificacion(calificacion);
     });
 
-    this.dataService.updateCalificaciones(nuevasCalificaciones);
+    console.log(`✅ ${operacionesPendientes} calificaciones procesadas`);
     this.calificacionesTemp = {};
     this.hasChanges.set(false);
+    
     alert('Calificaciones guardadas exitosamente');
+    
+    // Recargar calificaciones después de guardar
+    setTimeout(() => {
+      console.log('🔄 Recargando calificaciones desde API...');
+      this.dataService.loadCalificaciones();
+    }, 1500);
   }
 
   calcularPromedio(alumnoId: string): number | null {
-    // Crear un array temporal con las calificaciones actuales + las temporales
-    const calsTempArray: Calificacion[] = Object.entries(this.calificacionesTemp).map(([key, valor]) => {
-      const [aId, cId] = key.split('-');
-      return {
-        id: `temp-${key}`,
-        alumnoId: aId,
-        criterioId: cId,
-        materiaId: this.selectedMateria(),
-        calificacion: valor,
-        periodo: this.selectedPeriodo(),
-        fecha: new Date().toISOString().split('T')[0],
-      };
+    // Solo calcular con las calificaciones guardadas, NO con las temporales
+    console.log(`📊 Calculando promedio para alumno ${alumnoId}`, {
+      materiaId: this.selectedMateria(),
+      totalCalificaciones: this.calificaciones.length,
+      totalCriterios: this.criterios.length
     });
-
-    const calsCompletas = [
-      ...this.calificaciones.filter(c => {
-        const key = `${c.alumnoId}-${c.criterioId}`;
-        return !(key in this.calificacionesTemp);
-      }),
-      ...calsTempArray,
-    ];
-
-    return this.calculationsService.calcularPromedioAlumnoMateria(
+    
+    const promedio = this.calculationsService.calcularPromedioAlumnoMateria(
       alumnoId,
       this.selectedMateria(),
-      this.selectedPeriodo(),
-      calsCompletas,
+      this.calificaciones,
       this.criterios
     );
+    
+    console.log(`📊 Promedio calculado: ${promedio}`);
+    return promedio;
   }
 
   onMateriaChange(materiaId: string): void {

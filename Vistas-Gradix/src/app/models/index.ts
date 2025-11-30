@@ -10,7 +10,10 @@ export interface Docente {
 export interface CampoFormativo {
   id: string;
   nombre: string;
-  descripcion?: string;
+}
+
+export interface CampoFormativoRequest {
+  nombre: string;
 }
 
 export interface Materia {
@@ -43,14 +46,14 @@ export interface CriterioEvaluacion {
   id: string;
   nombre: string;
   descripcion?: string;
-  ponderacion: number; // Porcentaje de 0 a 100
+  porcentaje: number; // Cambiado de 'ponderacion' a 'porcentaje' para coincidir con backend
   materiaId: string;
 }
 
 export interface CriterioRequest {
   nombre: string;
   descripcion?: string;
-  ponderacion: number;
+  porcentaje: number;
   materiaId: number;
 }
 
@@ -58,10 +61,14 @@ export interface Calificacion {
   id: string;
   alumnoId: string;
   criterioId: string;
-  materiaId: string;
-  calificacion: number; // 0 a 10
-  periodo: string; // "1", "2", "3" para los trimestres
-  fecha: string;
+  valor: number; // Cambiado de 'calificacion' a 'valor' para coincidir con backend
+  fechaRegistro?: string; // Cambiado de 'fecha' a 'fechaRegistro'
+}
+
+export interface CalificacionRequest {
+  alumnoId: number;
+  criterioId: number;
+  valor: number;
 }
 
 export interface PromedioAlumno {

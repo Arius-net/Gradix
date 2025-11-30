@@ -51,7 +51,6 @@ export class DashboardComponent implements OnInit {
     alumnos.forEach(alumno => {
       const promedio = this.calculationsService.calcularPromedioGeneralAlumno(
         alumno.id, 
-        '1', 
         materias, 
         calificaciones, 
         criterios

@@ -65,7 +65,6 @@ export class ReportesComponent implements OnInit {
       const promedio = this.calculationsService.calcularPromedioAlumnoMateria(
         alumnoId,
         materia.id,
-        periodo,
         calificaciones,
         criterios
       );
@@ -86,7 +85,6 @@ export class ReportesComponent implements OnInit {
 
     return this.calculationsService.calcularPromedioGeneralAlumno(
       alumnoId,
-      periodo,
       materias,
       calificaciones,
       criterios

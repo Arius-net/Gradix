@@ -58,7 +58,6 @@ export class EstadisticasComponent implements OnInit {
       alumnos.forEach(alumno => {
         const promedio = this.calculationsService.calcularPromedioGeneralAlumno(
           alumno.id,
-          periodo,
           materias,
           calificaciones,
           criterios
@@ -93,7 +92,6 @@ export class EstadisticasComponent implements OnInit {
       // Estadísticas por materia
       const stats = this.calculationsService.calcularEstadisticasMateria(
         materiaId,
-        periodo,
         alumnos,
         calificaciones,
         criterios
@@ -104,7 +102,6 @@ export class EstadisticasComponent implements OnInit {
           const promedio = this.calculationsService.calcularPromedioAlumnoMateria(
             alumno.id,
             materiaId,
-            periodo,
             calificaciones,
             criterios
           );
@@ -140,7 +137,6 @@ export class EstadisticasComponent implements OnInit {
     return materias.map(materia => {
       const stats = this.calculationsService.calcularEstadisticasMateria(
         materia.id,
-        periodo,
         alumnos,
         calificaciones,
         criterios

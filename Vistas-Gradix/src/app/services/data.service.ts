@@ -165,6 +165,16 @@ export class DataService {
     this.criterioService.getAll().subscribe({
       next: (data) => {
         console.log('✅ Criterios cargados desde API:', data);
+        if (data.length > 0) {
+          console.log('🔍 Primer criterio (raw):', JSON.stringify(data[0], null, 2));
+          console.log('📋 Estructura del criterio:', {
+            id: data[0].id,
+            nombre: data[0].nombre,
+            descripcion: data[0].descripcion,
+            porcentaje: data[0].porcentaje,
+            materiaId: data[0].materiaId
+          });
+        }
         this.criterios.set(data);
       },
       error: (err) => {
@@ -186,7 +196,7 @@ export class DataService {
     const criterioRequest = {
       nombre: criterio.nombre,
       descripcion: criterio.descripcion,
-      ponderacion: criterio.ponderacion,
+      porcentaje: criterio.porcentaje,
       materiaId: Number(criterio.materiaId)
     };
     
@@ -213,7 +223,7 @@ export class DataService {
     const criterioRequest = {
       nombre: updatedCriterio.nombre,
       descripcion: updatedCriterio.descripcion,
-      ponderacion: updatedCriterio.ponderacion,
+      porcentaje: updatedCriterio.porcentaje,
       materiaId: Number(updatedCriterio.materiaId)
     };
     
@@ -249,12 +259,26 @@ export class DataService {
   }
 
   addCalificacion(calificacion: Calificacion): void {
-    this.calificacionService.create(calificacion).subscribe({
+    const calificacionRequest = {
+      alumnoId: Number(calificacion.alumnoId),
+      criterioId: Number(calificacion.criterioId),
+      valor: calificacion.valor
+    };
+    
+    console.log('➕ Enviando nueva calificación a API:', calificacionRequest);
+    
+    this.calificacionService.create(calificacionRequest).subscribe({
       next: (newCalificacion) => {
+        console.log('✅ Calificación creada en API:', newCalificacion);
         const current = this.calificaciones();
         this.updateCalificaciones([...current, newCalificacion]);
       },
-      error: (err) => console.error('Error creando calificación:', err)
+      error: (err) => {
+        console.error('❌ Error creando calificación:', err);
+        if (err.error) {
+          console.error('Detalles del error:', err.error);
+        }
+      }
     });
   }
 
@@ -269,12 +293,67 @@ export class DataService {
   }
 
   updateCalificacion(updatedCalificacion: Calificacion): void {
-    this.calificacionService.update(Number(updatedCalificacion.id), updatedCalificacion).subscribe({
+    const calificacionRequest = {
+      alumnoId: Number(updatedCalificacion.alumnoId),
+      criterioId: Number(updatedCalificacion.criterioId),
+      valor: updatedCalificacion.valor
+    };
+    
+    console.log('🔄 Actualizando calificación en API:', {
+      id: updatedCalificacion.id,
+      request: calificacionRequest
+    });
+    
+    this.calificacionService.update(Number(updatedCalificacion.id), calificacionRequest).subscribe({
       next: () => {
+        console.log('✅ Calificación actualizada en API');
         const current = this.calificaciones();
         this.updateCalificaciones(current.map(c => c.id === updatedCalificacion.id ? updatedCalificacion : c));
       },
-      error: (err) => console.error('Error actualizando calificación:', err)
+      error: (err) => {
+        console.error('❌ Error actualizando calificación:', err);
+        if (err.error) {
+          console.error('Detalles del error:', err.error);
+        }
+      }
+    });
+  }
+
+  upsertCalificacion(calificacion: Calificacion): void {
+    const calificacionRequest = {
+      alumnoId: Number(calificacion.alumnoId),
+      criterioId: Number(calificacion.criterioId),
+      valor: calificacion.valor
+    };
+    
+    console.log('🔄 Upsert calificación en API:', calificacionRequest);
+    
+    this.calificacionService.upsert(calificacionRequest).subscribe({
+      next: (savedCalificacion) => {
+        console.log('✅ Calificación guardada en API:', savedCalificacion);
+        const current = this.calificaciones();
+        // Buscar si ya existe en el estado local
+        const existingIndex = current.findIndex(
+          c => String(c.alumnoId) === String(savedCalificacion.alumnoId) && 
+               String(c.criterioId) === String(savedCalificacion.criterioId)
+        );
+        
+        if (existingIndex >= 0) {
+          // Actualizar existente
+          const updated = [...current];
+          updated[existingIndex] = savedCalificacion;
+          this.updateCalificaciones(updated);
+        } else {
+          // Agregar nueva
+          this.updateCalificaciones([...current, savedCalificacion]);
+        }
+      },
+      error: (err) => {
+        console.error('❌ Error en upsert calificación:', err);
+        if (err.error) {
+          console.error('Detalles del error:', err.error);
+        }
+      }
     });
   }
 

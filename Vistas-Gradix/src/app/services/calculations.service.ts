@@ -8,41 +8,52 @@ export class CalculationsService {
   calcularPromedioAlumnoMateria(
     alumnoId: string,
     materiaId: string,
-    periodo: string,
     calificaciones: Calificacion[],
     criterios: CriterioEvaluacion[]
   ): number | null {
-    // Filtrar calificaciones del alumno para esa materia y periodo
+    console.log(`🔢 calcularPromedioAlumnoMateria - alumnoId: ${alumnoId}, materiaId: ${materiaId}`);
+    
+    // Filtrar calificaciones del alumno para esa materia (filtrando por criterios de la materia)
+    const criteriosMateria = criterios.filter(c => String(c.materiaId) === String(materiaId));
+    console.log(`📋 Criterios de la materia:`, criteriosMateria);
+    
+    const criteriosIds = new Set(criteriosMateria.map(c => String(c.id)));
+    console.log(`🔑 IDs de criterios:`, Array.from(criteriosIds));
+    
     const calsAlumno = calificaciones.filter(
-      cal => cal.alumnoId === alumnoId && cal.materiaId === materiaId && cal.periodo === periodo
+      cal => {
+        const matchAlumno = String(cal.alumnoId) === String(alumnoId);
+        const matchCriterio = criteriosIds.has(String(cal.criterioId));
+        console.log(`  Cal: alumnoId=${cal.alumnoId} (${matchAlumno}), criterioId=${cal.criterioId} (${matchCriterio}), valor=${cal.valor}`);
+        return matchAlumno && matchCriterio;
+      }
     );
+
+    console.log(`✅ Calificaciones del alumno encontradas: ${calsAlumno.length}`, calsAlumno);
 
     if (calsAlumno.length === 0) return null;
 
     // Calcular promedio ponderado
     let sumaCalificaciones = 0;
-    let sumaPonderaciones = 0;
 
     calsAlumno.forEach(cal => {
-      const criterio = criterios.find(c => c.id === cal.criterioId);
+      const criterio = criterios.find(c => String(c.id) === String(cal.criterioId));
       if (criterio) {
-        sumaCalificaciones += cal.calificacion * (criterio.ponderacion / 100);
-        sumaPonderaciones += criterio.ponderacion;
+        const contribucion = cal.valor * (criterio.porcentaje / 100);
+        console.log(`  ${criterio.nombre}: ${cal.valor} * ${criterio.porcentaje}% = ${contribucion}`);
+        // Multiplicar calificación por su ponderación (como decimal)
+        sumaCalificaciones += contribucion;
       }
     });
 
-    // Si no se han capturado todas las ponderaciones, ajustar
-    if (sumaPonderaciones === 0) return null;
-
-    // Normalizar si no suma 100%
-    const promedio = (sumaCalificaciones / sumaPonderaciones) * 100;
-
-    return Math.round(promedio * 10) / 10; // Redondear a 1 decimal
+    console.log(`💯 Suma total: ${sumaCalificaciones}`);
+    
+    // El resultado ya es el promedio ponderado correcto
+    return Math.round(sumaCalificaciones * 10) / 10; // Redondear a 1 decimal
   }
 
   calcularPromedioGeneralAlumno(
     alumnoId: string,
-    periodo: string,
     materias: Materia[],
     calificaciones: Calificacion[],
     criterios: CriterioEvaluacion[]
@@ -50,7 +61,7 @@ export class CalculationsService {
     const promedios: number[] = [];
 
     materias.forEach(materia => {
-      const promedio = this.calcularPromedioAlumnoMateria(alumnoId, materia.id, periodo, calificaciones, criterios);
+      const promedio = this.calcularPromedioAlumnoMateria(alumnoId, materia.id, calificaciones, criterios);
       if (promedio !== null) {
         promedios.push(promedio);
       }
@@ -64,7 +75,6 @@ export class CalculationsService {
 
   calcularEstadisticasMateria(
     materiaId: string,
-    periodo: string,
     alumnos: Alumno[],
     calificaciones: Calificacion[],
     criterios: CriterioEvaluacion[]
@@ -74,7 +84,7 @@ export class CalculationsService {
     let reprobados = 0;
 
     alumnos.forEach(alumno => {
-      const promedio = this.calcularPromedioAlumnoMateria(alumno.id, materiaId, periodo, calificaciones, criterios);
+      const promedio = this.calcularPromedioAlumnoMateria(alumno.id, materiaId, calificaciones, criterios);
       if (promedio !== null) {
         promedios.push(promedio);
         if (promedio >= 6) {
@@ -111,7 +121,7 @@ export class CalculationsService {
 
   validarPonderaciones(criterios: CriterioEvaluacion[], materiaId: string): boolean {
     const criteriosMateria = criterios.filter(c => c.materiaId === materiaId);
-    const suma = criteriosMateria.reduce((acc, c) => acc + c.ponderacion, 0);
+    const suma = criteriosMateria.reduce((acc, c) => acc + c.porcentaje, 0);
     return suma === 100;
   }
 }
