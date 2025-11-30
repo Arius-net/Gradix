@@ -70,6 +70,8 @@ class AlumnoController {
                     it[nombre] = request.nombre
                     it[apellidos] = apellidosCombinados
                     it[Alumnos.docenteId] = docenteId
+                    it[grado] = request.grado
+                    it[grupo] = request.grupo
                 } get Alumnos.id
             }
 
@@ -78,6 +80,8 @@ class AlumnoController {
                 nombre = request.nombre,
                 apellidoPaterno = request.apellidoPaterno,
                 apellidoMaterno = request.apellidoMaterno,
+                grado = request.grado,
+                grupo = request.grupo,
                 fechaRegistro = null
             )
             call.respond(HttpStatusCode.Created, alumno)
@@ -103,6 +107,8 @@ class AlumnoController {
                 Alumnos.update({ Alumnos.id eq id }) {
                     it[nombre] = request.nombre
                     it[apellidos] = apellidosCombinados
+                    it[grado] = request.grado
+                    it[grupo] = request.grupo
                 } > 0
             }
 
@@ -159,6 +165,8 @@ class AlumnoController {
             nombre = row[Alumnos.nombre],
             apellidoPaterno = apellidoPaterno,
             apellidoMaterno = apellidoMaterno,
+            grado = row[Alumnos.grado],
+            grupo = row[Alumnos.grupo],
             fechaRegistro = row[Alumnos.fechaRegistro]
         )
     }

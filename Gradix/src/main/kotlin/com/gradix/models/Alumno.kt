@@ -13,6 +13,8 @@ object Alumnos : Table("alumno") {
     val nombre = varchar("nombre", 100)
     val apellidos = varchar("apellidos", 100) // Columna única que almacena "apellidoPaterno apellidoMaterno"
     val docenteId = integer("docente_id").references(Docentes.id)
+    val grado = integer("grado").nullable()
+    val grupo = varchar("grupo", 1).nullable()
     val fechaRegistro = timestamp("fecha_registro").defaultExpression(CurrentTimestamp())
 
     override val primaryKey = PrimaryKey(id)
@@ -25,6 +27,8 @@ data class Alumno(
     val nombre: String,
     val apellidoPaterno: String,
     val apellidoMaterno: String,
+    val grado: Int? = null,
+    val grupo: String? = null,
     @Contextual
     val fechaRegistro: Instant? = null
 )
@@ -33,5 +37,7 @@ data class Alumno(
 data class AlumnoRequest(
     val nombre: String,
     val apellidoPaterno: String,
-    val apellidoMaterno: String
+    val apellidoMaterno: String,
+    val grado: Int? = null,
+    val grupo: String? = null
 )

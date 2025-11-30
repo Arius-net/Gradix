@@ -9,6 +9,8 @@ object Materias : Table("materia") {
     val nombre = varchar("nombre", 100)
     val campoId = integer("campo_id").references(CampoFormativos.id)
     val docenteId = integer("docente_id").references(Docentes.id)
+    val grado = integer("grado").nullable()
+    val grupo = varchar("grupo", 1).nullable()
 
     override val primaryKey = PrimaryKey(id)
 }
@@ -19,13 +21,16 @@ data class Materia(
     val id: Int,
     val nombre: String,
     val campoId: Int,
-    val docenteId: Int
+    val docenteId: Int,
+    val grado: Int? = null,
+    val grupo: String? = null
 )
 
 @Serializable
 data class MateriaRequest(
     val nombre: String,
     val campoId: Int,
-    val docenteId: Int
+    val docenteId: Int,
+    val grado: Int? = null,
+    val grupo: String? = null
 )
-

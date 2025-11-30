@@ -69,12 +69,6 @@ class MateriaController {
             if (request.nombre.isBlank()) {
                 errores.add("El nombre de la materia es obligatorio")
             }
-            if (request.campoId == null) {
-                errores.add("El campoId es obligatorio")
-            }
-            if (request.docenteId == null) {
-                errores.add("El docenteId es obligatorio")
-            }
 
             if (errores.isNotEmpty()) {
                 call.respond(HttpStatusCode.BadRequest, mapOf("errores" to errores))
@@ -86,6 +80,8 @@ class MateriaController {
                     it[nombre] = request.nombre
                     it[campoId] = request.campoId
                     it[docenteId] = request.docenteId
+                    it[grado] = request.grado
+                    it[grupo] = request.grupo
                 }[Materias.id]
             }
 
@@ -93,7 +89,9 @@ class MateriaController {
                 id = id,
                 nombre = request.nombre,
                 campoId = request.campoId,
-                docenteId = request.docenteId
+                docenteId = request.docenteId,
+                grado = request.grado,
+                grupo = request.grupo
             )
             call.respond(HttpStatusCode.Created, materia)
         } catch (e: Exception) {
@@ -116,6 +114,8 @@ class MateriaController {
                     it[nombre] = request.nombre
                     it[campoId] = request.campoId
                     it[docenteId] = request.docenteId
+                    it[grado] = request.grado
+                    it[grupo] = request.grupo
                 } > 0
             }
 
@@ -164,6 +164,8 @@ class MateriaController {
         id = row[Materias.id],
         nombre = row[Materias.nombre],
         campoId = row[Materias.campoId],
-        docenteId = row[Materias.docenteId]
+        docenteId = row[Materias.docenteId],
+        grado = row[Materias.grado],
+        grupo = row[Materias.grupo]
     )
 }
