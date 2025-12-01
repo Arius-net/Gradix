@@ -41,5 +41,5 @@ fun Application.module() {
 }
 
 fun main() {
-    embeddedServer(Netty, port = 8081, module = Application::module).start(wait = true) // Cambiado a 8081
+    embeddedServer(Netty, port = 8081, host = "0.0.0.0", module = Application::module).start(wait = true)
 }

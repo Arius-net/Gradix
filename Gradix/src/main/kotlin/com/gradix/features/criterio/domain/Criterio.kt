@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.Table
 object Criterios : Table("criterio") {
     val id = integer("id").autoIncrement()
     val nombre = varchar("nombre", 100)
-    val descripcion = varchar("descripcion", 255).nullable()
+    val descripcion = text("descripcion").nullable()
     val porcentaje = decimal("porcentaje", 5, 2) // NUMERIC(5,2)
     val materiaId = integer("materia_id").references(Materias.id)
 

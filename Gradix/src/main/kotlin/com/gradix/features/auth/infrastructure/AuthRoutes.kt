@@ -5,11 +5,11 @@ import io.ktor.server.routing.*
 
 fun Route.authRoutes(authController: AuthController) {
     route("/auth") {
-        post("/register") {
+        post<Unit>("/register") {
             authController.register(call)
         }
 
-        post("/login") {
+        post<Unit>("/login") {
             authController.login(call)
         }
 
