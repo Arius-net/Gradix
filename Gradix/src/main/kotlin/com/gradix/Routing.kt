@@ -1,8 +1,23 @@
 package com.gradix
 
-import com.gradix.controllers.*
-import com.gradix.routes.*
-import com.gradix.services.AuthService
+import com.gradix.features.auth.application.AuthService
+import com.gradix.features.auth.infrastructure.AuthController
+import com.gradix.features.auth.infrastructure.authRoutes
+import com.gradix.features.alumno.application.AlumnoService
+import com.gradix.features.alumno.infrastructure.AlumnoController
+import com.gradix.features.alumno.infrastructure.alumnoRoutes
+import com.gradix.features.materia.application.MateriaService
+import com.gradix.features.materia.infrastructure.MateriaController
+import com.gradix.features.materia.infrastructure.materiaRoutes
+import com.gradix.features.campoformativo.application.CampoFormativoService
+import com.gradix.features.campoformativo.infrastructure.CampoFormativoController
+import com.gradix.features.campoformativo.infrastructure.campoFormativoRoutes
+import com.gradix.features.criterio.application.CriterioService
+import com.gradix.features.criterio.infrastructure.CriterioController
+import com.gradix.features.criterio.infrastructure.criterioRoutes
+import com.gradix.features.calificacion.application.CalificacionService
+import com.gradix.features.calificacion.infrastructure.CalificacionController
+import com.gradix.features.calificacion.infrastructure.calificacionRoutes
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
@@ -13,11 +28,21 @@ fun Application.configureRouting() {
     // Inicializar servicios y controladores
     val authService = AuthService()
     val authController = AuthController(authService)
-    val alumnoController = AlumnoController()
-    val materiaController = MateriaController()
-    val campoFormativoController = CampoFormativoController()
-    val criterioController = CriterioController()
-    val calificacionController = CalificacionController()
+
+    val alumnoService = AlumnoService()
+    val alumnoController = AlumnoController(alumnoService)
+
+    val materiaService = MateriaService()
+    val materiaController = MateriaController(materiaService)
+
+    val campoFormativoService = CampoFormativoService()
+    val campoFormativoController = CampoFormativoController(campoFormativoService)
+
+    val criterioService = CriterioService()
+    val criterioController = CriterioController(criterioService)
+
+    val calificacionService = CalificacionService()
+    val calificacionController = CalificacionController(calificacionService)
 
     // Configurar manejo de errores
     install(StatusPages) {
