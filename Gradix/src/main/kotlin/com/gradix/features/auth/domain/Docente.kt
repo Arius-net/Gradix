@@ -32,9 +32,7 @@ data class Docente(
 
 @Serializable
 data class DocenteRequest(
-    @kotlinx.serialization.SerialName("username")
     val nombre: String,
-    @kotlinx.serialization.SerialName("email")
     val correo: String,
     val password: String,
     val escuela: String = "No especificado"
