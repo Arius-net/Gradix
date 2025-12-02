@@ -5,7 +5,6 @@ import com.gradix.features.auth.domain.Docentes
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Table
 
-// Tabla de base de datos
 object Materias : Table("materia") {
     val id = integer("id").autoIncrement()
     val nombre = varchar("nombre", 100)
@@ -17,7 +16,6 @@ object Materias : Table("materia") {
     override val primaryKey = PrimaryKey(id)
 }
 
-// DTO para serialización
 @Serializable
 data class Materia(
     val id: Int,

@@ -25,7 +25,7 @@ import io.ktor.server.routing.*
 import io.ktor.http.*
 
 fun Application.configureRouting() {
-    // Inicializar servicios y controladores
+    
     val authService = AuthService()
     val authController = AuthController(authService)
 
@@ -44,7 +44,7 @@ fun Application.configureRouting() {
     val calificacionService = CalificacionService()
     val calificacionController = CalificacionController(calificacionService)
 
-    // Configurar manejo de errores
+    
     install(StatusPages) {
         exception<Throwable> { call, cause ->
             call.respond(
@@ -55,7 +55,7 @@ fun Application.configureRouting() {
     }
 
     routing {
-        // Ruta de bienvenida
+
         get("/") {
             call.respond(HttpStatusCode.OK, mapOf(
                 "message" to "Bienvenido a Gradix API",
@@ -72,7 +72,6 @@ fun Application.configureRouting() {
             ))
         }
 
-        // Rutas de la API
         authRoutes(authController)
         alumnoRoutes(alumnoController)
         materiaRoutes(materiaController)
