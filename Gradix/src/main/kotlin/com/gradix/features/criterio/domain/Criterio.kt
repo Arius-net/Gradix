@@ -4,7 +4,6 @@ import com.gradix.features.materia.domain.Materias
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Table
 
-
 object Criterios : Table("criterio") {
     val id = integer("id").autoIncrement()
     val nombre = varchar("nombre", 100)
@@ -14,7 +13,6 @@ object Criterios : Table("criterio") {
 
     override val primaryKey = PrimaryKey(id)
 }
-
 
 @Serializable
 data class Criterio(
