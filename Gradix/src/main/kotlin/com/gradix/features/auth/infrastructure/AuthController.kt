@@ -13,16 +13,13 @@ class AuthController(private val authService: AuthService) {
 
     suspend fun register(call: ApplicationCall) {
         try {
-            // Log para ver el body raw que llega
             val bodyText = call.receiveText()
             call.application.environment.log.info("Body recibido en /register: $bodyText")
 
-            // Intentar parsear manualmente para debug
             try {
                 val request = kotlinx.serialization.json.Json.decodeFromString<DocenteRequest>(bodyText)
                 call.application.environment.log.info("Request parseado correctamente: $request")
 
-                // Verificar si el correo ya existe
                 val existingDocente = authService.findByCorreo(request.correo)
                 if (existingDocente != null) {
                     call.respond(HttpStatusCode.Conflict, mapOf("error" to "El correo ya está registrado"))

@@ -24,7 +24,7 @@ object Security {
         .withIssuer(issuer)
         .withClaim("userId", userId)
         .withClaim("email", email)
-        .withExpiresAt(Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000)) // 24 horas
+        .withExpiresAt(Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
         .sign(algorithm)
 }
 

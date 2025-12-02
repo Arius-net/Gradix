@@ -13,7 +13,6 @@ fun Route.authRoutes(authController: AuthController) {
             authController.login(call)
         }
 
-        // Esta ruta debería ser protegida pero por simplicidad la dejo abierta
         get("/me") {
             authController.me(call)
         }

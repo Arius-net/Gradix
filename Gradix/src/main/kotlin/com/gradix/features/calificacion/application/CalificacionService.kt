@@ -66,13 +66,11 @@ class CalificacionService {
     }
 
     suspend fun upsert(request: CalificacionRequest): Calificacion = dbQuery {
-        // Buscar si ya existe una calificación para este alumno y criterio
         val existing = Calificaciones.select {
             (Calificaciones.alumnoId eq request.alumnoId) and (Calificaciones.criterioId eq request.criterioId)
         }.singleOrNull()
 
         if (existing != null) {
-            // Actualizar existente
             val id = existing[Calificaciones.id]
             Calificaciones.update({ Calificaciones.id eq id }) {
                 it[valor] = BigDecimal(request.valor)
@@ -81,7 +79,6 @@ class CalificacionService {
                 .map(::mapToCalificacion)
                 .single()
         } else {
-            // Crear nuevo
             val newId = Calificaciones.insert {
                 it[alumnoId] = request.alumnoId
                 it[criterioId] = request.criterioId

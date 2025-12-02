@@ -9,7 +9,7 @@ import org.jetbrains.exposed.sql.javatime.CurrentTimestamp
 import org.jetbrains.exposed.sql.javatime.timestamp
 import java.time.Instant
 
-// Tabla de base de datos
+
 object Calificaciones : Table("calificacion") {
     val id = integer("id").autoIncrement()
     val alumnoId = integer("alumno_id").references(Alumnos.id)
@@ -20,7 +20,6 @@ object Calificaciones : Table("calificacion") {
     override val primaryKey = PrimaryKey(id)
 }
 
-// DTO para serialización
 @Serializable
 data class Calificacion(
     val id: Int,

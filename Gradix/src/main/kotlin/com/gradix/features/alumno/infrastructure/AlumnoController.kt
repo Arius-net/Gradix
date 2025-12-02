@@ -43,7 +43,6 @@ class AlumnoController(private val alumnoService: AlumnoService) {
         try {
             val request = call.receive<AlumnoRequest>()
 
-            // Obtener el docente_id del JWT token
             val principal = call.principal<JWTPrincipal>()
             val docenteId = principal?.payload?.getClaim("userId")?.asInt()
 
