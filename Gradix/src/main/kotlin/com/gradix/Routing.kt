@@ -72,12 +72,14 @@ fun Application.configureRouting() {
             ))
         }
 
-        authRoutes(authController)
-        alumnoRoutes(alumnoController)
-        materiaRoutes(materiaController)
-        campoFormativoRoutes(campoFormativoController)
-        criterioRoutes(criterioController)
-        calificacionRoutes(calificacionController)
+        route("/api"){
+            authRoutes(authController)
+            alumnoRoutes(alumnoController)
+            materiaRoutes(materiaController)
+            campoFormativoRoutes(campoFormativoController)
+            criterioRoutes(criterioController)
+            calificacionRoutes(calificacionController)
+        }
     }
 }
 

@@ -12,7 +12,7 @@ fun Application.module() {
 
     install(CORS) {
 
-        allowHost("http://frontgradix.s3-website-us-east-1.amazonaws.com", schemes = listOf("http"))
+        allowHost("frontgradix.s3-website-us-east-1.amazonaws.com", schemes = listOf("http"))
 
         allowMethod(HttpMethod.Options)
         allowMethod(HttpMethod.Get)
