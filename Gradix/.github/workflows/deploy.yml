@@ -3,7 +3,6 @@ name: Deploy Backend Ktor to EC2
 on:
   push:
     branches:
-      # *** IMPORTANTE: Asegúrate que esta lista incluya la rama donde subirás este archivo ***
       - develop-Backend
       - main
       - master
@@ -18,7 +17,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Configurar Java 21 (Necesario para compilar tu Ktor/Gradle)
+      # 2. Configurar Java 21
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
@@ -42,8 +41,7 @@ jobs:
       # 6. Desplegar a EC2 (Subir archivo + Reiniciar servicio)
       - name: Deploy to EC2 via SSH
         run: |
-          # A. Subir el nuevo .jar: Fuente (api-all.jar) va a Destino (/home/ec2-user/api-all.jar)
-          # Esto coincide con lo que tu servicio Systemd está configurado para ejecutar.
+          # A. Subir el nuevo .jar:
           scp -o StrictHostKeyChecking=no -i private_key.pem build/libs/api-all.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/api-all.jar
 
           # B. Reiniciar el servicio: Usamos el servicio confirmado 'ktor-backend'
