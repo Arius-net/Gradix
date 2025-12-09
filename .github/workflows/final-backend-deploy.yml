@@ -29,10 +29,12 @@ jobs:
       # 3. Dar permisos de ejecución a Gradle
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+        working-directory: Gradix
 
       # 4. Construir el Fat JAR
       - name: Build with Gradle
         run: ./gradlew clean shadowJar
+        working-directory: Gradix
 
       # 5. Crear el archivo de llave SSH temporal
       - name: Create SSH Key File
@@ -43,5 +45,5 @@ jobs:
       # 6. Desplegar a EC2 (Subir archivo + Reiniciar servicio)
       - name: Deploy to EC2 via SSH
         run: |
-          scp -o StrictHostKeyChecking=no -i private_key.pem build/libs/api-all.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/api-all.jar
+          scp -o StrictHostKeyChecking=no -i private_key.pem Gradix/build/libs/api-all.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/api-all.jar
           ssh -o StrictHostKeyChecking=no -i private_key.pem ec2-user@${{ secrets.EC2_HOST }} "sudo systemctl restart ktor-backend && sudo systemctl status ktor-backend"
