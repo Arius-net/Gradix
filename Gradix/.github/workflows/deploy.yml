@@ -47,4 +47,4 @@ jobs:
           scp -o StrictHostKeyChecking=no -i private_key.pem build/libs/api-all.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/api-all.jar
 
           # B. Reiniciar el servicio: Usamos el servicio confirmado 'ktor-backend'
-          ssh -o StrictHostKeyChecking=no -i private_key.pem ec2-user@${{ secrets.EC2_HOST }} "sudo systemctl restart ktor-backend.service && sudo systemctl status ktor-backend.service"
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ec2-user@${{ secrets.EC2_HOST }} "sudo systemctl restart ktor-backend && sudo systemctl status ktor-backend"
