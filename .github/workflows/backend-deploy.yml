@@ -6,6 +6,9 @@ on:
       - develop-Backend
       - main
       - master
+  
+  # 🚨 ¡Añadir esta línea para forzar la lectura y permitir ejecución manual! 🚨
+  workflow_dispatch: 
 
 jobs:
   deploy-backend:
